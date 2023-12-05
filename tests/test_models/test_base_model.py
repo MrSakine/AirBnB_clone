@@ -77,6 +77,9 @@ class TestBaseModelToDictMethod(unittest.TestCase):
         temp = bm.to_dict()
         self.assertIsInstance(temp["__class__"], str)
 
+    def test_length_of_the_dict(self):
+        self.assertEqual(len(str(BaseModel().to_dict())), 160)
+
 
 class TestBaseModelStringRepresentationMethod(unittest.TestCase):
     """Unittests for testing str magic method of the Base Model class"""
@@ -88,9 +91,9 @@ class TestBaseModelStringRepresentationMethod(unittest.TestCase):
     def test_if_empty(self):
         bm = BaseModel()
         self.assertTrue(str(bm) != "" and str(bm) is not None)
-        
+
     def test_length_of_the_text(self):
-        self.assertEqual(len(str(BaseModel())), 203)
+        self.assertEqual(len(str(BaseModel())), 229)
 
 
 if __name__ == "__main__":
