@@ -88,6 +88,9 @@ class TestBaseModelStringRepresentationMethod(unittest.TestCase):
     def test_if_empty(self):
         bm = BaseModel()
         self.assertTrue(str(bm) != "" and str(bm) is not None)
+        
+    def test_length_of_the_text(self):
+        self.assertEqual(len(str(BaseModel())), 203)
 
 
 if __name__ == "__main__":
