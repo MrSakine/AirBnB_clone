@@ -48,8 +48,8 @@ class FileStorage():
                 open(FileStorage.__file_path, encoding="utf-8"))
             temp = {}
             for k, v in FileStorage.__objects.items():
-                if k != "__class__":
-                    temp[k] = BaseModel(**v)
+                temp[k] = BaseModel(
+                    **({k1: v1 for k1, v1 in v.items() if k1 != "__class__"}))
             FileStorage.__objects = temp
         except Exception:
             pass
