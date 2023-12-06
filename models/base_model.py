@@ -3,6 +3,7 @@
 This module is the base model class
 """
 import uuid
+import models
 from datetime import datetime
 
 
@@ -12,9 +13,11 @@ class BaseModel():
     attributes/methods for other classes
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """
-        Initialize attributes of the class
+        Initialize attributes of the class, use
+        @storage global variable to add a new object into @FileStorage
+        private class attribute named @objects if @kwargs is not defined
 
         Attributes:
             - id (optional, str): the id of the object
@@ -25,11 +28,27 @@ class BaseModel():
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
+        if len(kwargs) == 0:
+            models.storage.new(self)
+        elif len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if k != "__class__":
+                    if k == "created_at" or k == "updated_at":
+                        setattr(
+                            self, k, datetime.strptime(
+                                v, "%Y-%m-%dT%H:%M:%S.%f")
+                        )
+                    else:
+                        setattr(self, k, v)
+        else:
+            pass
+
     def save(self):
         """
         Update the attribute @updated_at of the base model object
         """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
