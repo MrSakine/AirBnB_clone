@@ -60,7 +60,7 @@ class BaseModel():
         and their values as values of the dictionary
         """
         response = {}
-        for k, v in vars(self).items():
+        for k, v in self.__dict__.items():
             if k == "created_at" or k == "updated_at":
                 response[k] = v.strftime("%Y-%m-%dT%H:%M:%S.%f")
             else:
@@ -77,7 +77,3 @@ class BaseModel():
                 self.__class__.__name__, self.id, self.__dict__
             )
         )
-
-    def __setattr__(self, name, value):
-        super().__setattr__(name, value)
-        models.storage.new(self)

@@ -22,8 +22,7 @@ class FileStorage():
 
     def all(self):
         """Load JSON as objects in Python"""
-        objects = FileStorage.__objects.copy().items()
-        return {k: BaseModel(**v) for k, v in objects}
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -33,17 +32,24 @@ class FileStorage():
         - obj (any): the object to store
         """
         key = "{0}.{1}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Save @__objects to @__file_path"""
+        objects = FileStorage.__objects
         with open(FileStorage.__file_path, "w", encoding="utf-8") as file:
-            print(json.dumps(FileStorage.__objects), file=file)
+            json.dump({k: objects[k].to_dict()
+                      for k in objects.keys()}, file)
 
     def reload(self):
         """Get JSON contents from @__file_path"""
         try:
             FileStorage.__objects = json.load(
                 open(FileStorage.__file_path, encoding="utf-8"))
+            temp = {}
+            for k, v in FileStorage.__objects.items():
+                if k != "__class__":
+                    temp[k] = BaseModel(**v)
+            FileStorage.__objects = temp
         except Exception:
             pass
