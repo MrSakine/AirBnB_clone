@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
                 if len(args) > 1:
                     objs = storage.all()
                     key = "{}.{}".format(args[0], args[1])
-                    for obj, string in objs.items():
+                    for obj, _ in objs.items():
                         if obj == key:
                             del objs[obj]
                             storage.save()
@@ -169,12 +169,12 @@ class HBNBCommand(cmd.Cmd):
                                         else:
                                             print("** value missing **")
                                         break
-                                else:
-                                    if len(args) > 3:
-                                        setattr(srting, args[2], args[3])
-                                        string.save()
                                     else:
-                                        print("** value missing **")
+                                        if len(args) > 3:
+                                            setattr(string, args[2], args[3])
+                                            string.save()
+                                        else:
+                                            print("** value missing **")
                             else:
                                 print("** attribute name missing **")
                             break

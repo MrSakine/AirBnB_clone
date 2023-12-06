@@ -4,6 +4,7 @@ This module is the base model class
 """
 import uuid
 import models
+import time
 from datetime import datetime
 
 
@@ -16,8 +17,8 @@ class BaseModel():
     def __init__(self, *args, **kwargs) -> None:
         """
         Initialize attributes of the class, use
-        @storage global variable to add a new object into @FileStorage
-        private class attribute named @objects if @kwargs is not defined
+        @storage variable to add a new object into @FileStorage
+        private class attribute named @objects
 
         Attributes:
             - id (optional, str): the id of the object
@@ -59,7 +60,7 @@ class BaseModel():
         and their values as values of the dictionary
         """
         response = {}
-        for k, v in self.__dict__.items():
+        for k, v in vars(self).items():
             if k == "created_at" or k == "updated_at":
                 response[k] = v.strftime("%Y-%m-%dT%H:%M:%S.%f")
             else:
@@ -73,6 +74,10 @@ class BaseModel():
         """
         return (
             "[{0}] ({1}) {2}".format(
-                self.__class__.__name__, self.id, str(self.__dict__)
+                self.__class__.__name__, self.id, self.__dict__
             )
         )
+
+    def __setattr__(self, name, value):
+        super().__setattr__(name, value)
+        models.storage.new(self)
