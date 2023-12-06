@@ -3,6 +3,7 @@
 This module is all unit tests about base model class
 """
 import unittest
+from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
 
@@ -94,6 +95,10 @@ class TestBaseModelStringRepresentationMethod(unittest.TestCase):
 
     def test_length_of_the_text(self):
         self.assertEqual(len(str(BaseModel())), 229)
+
+
+class TestBaseModelStorageClass(unittest.TestCase):
+    """Unittests for testing instance of FileStorage in the Base Model class"""
 
 
 if __name__ == "__main__":
