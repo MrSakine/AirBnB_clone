@@ -1,15 +1,15 @@
 #!/usr/bin/python3
-"""user.py"""
+"""review.py"""
+
 from models.base_model import BaseModel
 
 
-class User(BaseModel):
-    """class User that inherits from BaseModel"""
+class Review(BaseModel):
+    """Class Review that inherit from BaseModel"""
 
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+    place_id = ""
+    user_id = ""
+    text = ""
 
     def __init__(self, *args, **kwargs):
         """init"""

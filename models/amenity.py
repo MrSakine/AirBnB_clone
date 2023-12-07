@@ -1,15 +1,13 @@
 #!/usr/bin/python3
-"""user.py"""
+"""amenity.py"""
+
 from models.base_model import BaseModel
 
 
-class User(BaseModel):
-    """class User that inherits from BaseModel"""
+class Amenity(BaseModel):
+    """Amenity class that inherit from BaseModel"""
 
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+    name = ""
 
     def __init__(self, *args, **kwargs):
         """init"""

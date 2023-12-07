@@ -6,6 +6,11 @@ import cmd
 import sys
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.place import Place
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -15,12 +20,20 @@ class HBNBCommand(cmd.Cmd):
     # INFO: task 6
     prompt = "(hbnb) "
 
-    def __init__(self) -> None:
+    def __init__(self):
         """init"""
         cmd.Cmd.__init__(self)
         self.classes = {
             "BaseModel": self.create_BaseModel,
-            "User": self.create_User,  # BUG: I don't know what is going on.
+            """
+            # BUG: I don't know what is going on I think its related to Task-10.
+            """
+            "User": self.create_User,
+            "State": self.create_State,
+            "City": self.create_City,
+            "Place": self.create_Place,
+            "Amenity": self.create_Amenity,
+            "Review": self.create_Review,
         }
 
     def do_quit(self, line):

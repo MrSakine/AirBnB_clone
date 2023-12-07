@@ -8,7 +8,7 @@ import time
 from datetime import datetime
 
 
-class BaseModel():
+class BaseModel:
     """
     Class BaseModel that defines all common
     attributes/methods for other classes
@@ -36,8 +36,9 @@ class BaseModel():
                 if k != "__class__":
                     if k == "created_at" or k == "updated_at":
                         setattr(
-                            self, k, datetime.strptime(
-                                v, "%Y-%m-%dT%H:%M:%S.%f")
+                            self,
+                            k,
+                            datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f"),
                         )
                     else:
                         setattr(self, k, v)
@@ -66,14 +67,12 @@ class BaseModel():
             else:
                 response[k] = v
         response["__class__"] = self.__class__.__name__
-        return (response)
+        return response
 
     def __str__(self) -> str:
         """
         String representation of the object
         """
-        return (
-            "[{0}] ({1}) {2}".format(
-                self.__class__.__name__, self.id, self.__dict__
-            )
+        return "[{0}] ({1}) {2}".format(
+            self.__class__.__name__, self.id, self.__dict__
         )
