@@ -20,7 +20,7 @@ class HBNBCommand(cmd.Cmd):
     # INFO: task 6
     prompt = "(hbnb) "
 
-    def __init__(self) -> None:
+    def __init__(self):
         """init"""
         cmd.Cmd.__init__(self)
         self.classes = {
