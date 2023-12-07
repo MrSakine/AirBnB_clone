@@ -5,6 +5,7 @@ This module is the entry point of the command interpreter
 import cmd
 import sys
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -19,6 +20,7 @@ class HBNBCommand(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.classes = {
             "BaseModel": self.create_BaseModel,
+            "User": self.create_User,  # BUG: I don't know what is going on.
         }
 
     def do_quit(self, line):
