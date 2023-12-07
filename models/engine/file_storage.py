@@ -58,5 +58,5 @@ class FileStorage:
                                 }
                             )
                 FileStorage.__objects = temp
-        except FileNotFoundError:
+        except Exception:
             pass

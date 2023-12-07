@@ -3,7 +3,9 @@
 This module is all unit tests about base model class
 """
 import unittest
+import subprocess
 from datetime import datetime
+from models import storage
 from models.base_model import BaseModel
 
 
@@ -29,6 +31,25 @@ class TestBaseModelInstantiation(unittest.TestCase):
         bm = BaseModel()
         bm2 = BaseModel()
         self.assertTrue(bm.id != bm2.id)
+
+    def test_initialization_without_kwargs(self):
+        bm = BaseModel()
+        self.assertTrue(len(bm.__dict__) == 3)
+
+    def test_initialization_with_one_kwarg(self):
+        bm = BaseModel(**({"name": "python"}))
+        self.assertEqual(bm.__dict__.__len__(), 4)
+
+    def test_initialization_with_multiple_kwargs(self):
+        bm = BaseModel(**(
+            {
+                "name": "python",
+                "surname": "3.8",
+                "father": "C",
+                "students": "alx"
+            }
+        ))
+        self.assertGreater(bm.__dict__.__len__(), 3)
 
 
 class TestBaseModelSaveMethod(unittest.TestCase):
@@ -98,6 +119,31 @@ class TestBaseModelStringRepresentationMethod(unittest.TestCase):
 
 class TestBaseModelStorageClass(unittest.TestCase):
     """Unittests for testing instance of FileStorage in the Base Model class"""
+
+    def test_storage_all_method_without_instantiation(self):
+        self.assertNotEqual(len(storage.all()), 0)
+
+    def test_storage_all_method_with_instantiation(self):
+        _ = BaseModel()
+        self.assertGreaterEqual(len(storage.all()), 1)
+
+    def test_storage_all_method_with_kwargs_instantiation(self):
+        _ = BaseModel(**({"name": "python"}))
+        self.assertGreaterEqual(len(storage.all()), 1)
+
+    def test_storage_save_and_reload_method_without_instance(self):
+        self.empty_file()
+        storage.reload()
+        _all = storage.all()
+        self.assertEqual(len(_all), 0)
+
+    def tearDown(self) -> None:
+        self.empty_file()
+
+    def empty_file(self):
+        filename = "objects.json"
+        with open(filename, "w", encoding="utf-8") as file:
+            print("{}", file=file, end="")
 
 
 if __name__ == "__main__":
