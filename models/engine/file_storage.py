@@ -3,10 +3,9 @@
 This module is about the file storage class
 """
 import json
-from models.base_model import BaseModel
 
 
-class FileStorage():
+class FileStorage:
     """
     File storage class definition
     """
@@ -38,18 +37,26 @@ class FileStorage():
         """Save @__objects to @__file_path"""
         objects = FileStorage.__objects
         with open(FileStorage.__file_path, "w", encoding="utf-8") as file:
-            json.dump({k: objects[k].to_dict()
-                      for k in objects.keys()}, file)
+            json.dump({k: objects[k].to_dict() for k in objects.keys()}, file)
 
     def reload(self):
         """Get JSON contents from @__file_path"""
         try:
-            FileStorage.__objects = json.load(
-                open(FileStorage.__file_path, encoding="utf-8"))
-            temp = {}
-            for k, v in FileStorage.__objects.items():
-                temp[k] = BaseModel(
-                    **({k1: v1 for k1, v1 in v.items() if k1 != "__class__"}))
-            FileStorage.__objects = temp
-        except Exception:
+            with open(FileStorage.__file_path, "r", encoding="utf-8") as file:
+                objs = json.load(file)
+                temp = {}
+                for k, v in objs.items():
+                    class_name = v.get("__class__")
+                    if class_name:
+                        cls = globals().get(class_name)
+                        if cls:
+                            temp[k] = cls(
+                                **{
+                                    k1: v1
+                                    for k1, v1 in v.items()
+                                    if k1 != "__class__"
+                                }
+                            )
+                FileStorage.__objects = temp
+        except FileNotFoundError:
             pass

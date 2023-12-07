@@ -5,6 +5,12 @@ This module is the entry point of the command interpreter
 import cmd
 import sys
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.place import Place
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -14,11 +20,17 @@ class HBNBCommand(cmd.Cmd):
     # INFO: task 6
     prompt = "(hbnb) "
 
-    def __init__(self) -> None:
+    def __init__(self):
         """init"""
         cmd.Cmd.__init__(self)
         self.classes = {
-            "BaseModel": self.create_BaseModel,
+            "BaseModel": self.create_base_model,
+            "User": self.create_user,
+            "State": self.create_state,
+            "City": self.create_city,
+            "Place": self.create_place,
+            "Amenity": self.create_amenity,
+            "Review": self.create_review,
         }
 
     def do_quit(self, line):
@@ -43,12 +55,54 @@ class HBNBCommand(cmd.Cmd):
 
     # INFO: Task 7 Starts Here.
 
-    def create_BaseModel(self, **kwargs):
-        """Create a new instance from BaseModel"""
+    def create_base_model(self, **kwargs):
+        """Create a new instance of base model"""
         if kwargs:
             return BaseModel(**kwargs)
         else:
             return BaseModel()
+
+    def create_user(self, **kwargs):
+        """create a new istance of user"""
+        if kwargs:
+            return User(**kwargs)
+        else:
+            return User()
+
+    def create_state(self, **kwargs):
+        """create a new instance of state"""
+        if kwargs:
+            return State(**kwargs)
+        else:
+            return State()
+
+    def create_city(self, **kwargs):
+        """create a new instance of city"""
+        if kwargs:
+            return City(**kwargs)
+        else:
+            return City()
+
+    def create_place(self, **kwargs):
+        """create a new instance of place"""
+        if kwargs:
+            return Place(**kwargs)
+        else:
+            return Place()
+
+    def create_amenity(self, **kwargs):
+        """create a new instance of amenity"""
+        if kwargs:
+            return Amenity(**kwargs)
+        else:
+            return Amenity()
+
+    def create_review(self, **kwargs):
+        """create a new instance of review"""
+        if kwargs:
+            return Review(**kwargs)
+        else:
+            return Review()
 
     def do_create(self, line):
         """
