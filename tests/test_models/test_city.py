@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 import unittest
 
 
-class TestUser(unittest.TestCase):
+class TestCity(unittest.TestCase):
     """ Define City attributes and methods tests """
 
     def setUp(self):
