@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""amenity.py"""
-
+"""
+This module is about the amenity model class
+"""
 from models.base_model import BaseModel
 
 

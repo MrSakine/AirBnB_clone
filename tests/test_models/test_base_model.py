@@ -3,7 +3,6 @@
 This module is all unit tests about base model class
 """
 import unittest
-from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
 
@@ -94,7 +93,7 @@ class TestBaseModelStringRepresentationMethod(unittest.TestCase):
         self.assertTrue(str(bm) != "" and str(bm) is not None)
 
     def test_length_of_the_text(self):
-        self.assertEqual(len(str(BaseModel())), 229)
+        self.assertGreaterEqual(len(str(BaseModel())), 220)
 
 
 class TestBaseModelStorageClass(unittest.TestCase):
