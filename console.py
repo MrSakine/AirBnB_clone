@@ -59,11 +59,53 @@ class HBNBCommand(cmd.Cmd):
     # INFO: Task 7 Starts Here.
 
     def create_BaseModel(self, **kwargs):
-        """Create a new instance from BaseModel"""
+        """Create a new instance"""
         if kwargs:
             return BaseModel(**kwargs)
         else:
             return BaseModel()
+
+    def create_User(self, **kwargs):
+        """create a new istance"""
+        if kwargs:
+            return User(**kwargs)
+        else:
+            return User()
+
+    def create_State(self, **kwargs):
+        """create a new instance"""
+        if kwargs:
+            return State(**kwargs)
+        else:
+            return State()
+
+    def create_City(self, **kwargs):
+        """create a new instance"""
+        if kwargs:
+            return City(**kwargs)
+        else:
+            return City()
+
+    def create_Place(self, **kwargs):
+        """create a new instance"""
+        if kwargs:
+            return Place(**kwargs)
+        else:
+            return Place()
+
+    def create_Amenity(self, **kwargs):
+        """create a new instance"""
+        if kwargs:
+            return Amenity(**kwargs)
+        else:
+            return Amenity()
+
+    def create_Review(self, **kwargs):
+        """create a new instance"""
+        if kwargs:
+            return Review(**kwargs)
+        else:
+            return Review()
 
     def do_create(self, line):
         """
