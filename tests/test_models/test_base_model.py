@@ -3,6 +3,7 @@
 This module is all unit tests about base model class
 """
 import unittest
+import subprocess
 from datetime import datetime
 from models import storage
 from models.base_model import BaseModel
@@ -118,6 +119,31 @@ class TestBaseModelStringRepresentationMethod(unittest.TestCase):
 
 class TestBaseModelStorageClass(unittest.TestCase):
     """Unittests for testing instance of FileStorage in the Base Model class"""
+
+    def test_storage_all_method_without_instantiation(self):
+        self.assertNotEqual(len(storage.all()), 0)
+
+    def test_storage_all_method_with_instantiation(self):
+        _ = BaseModel()
+        self.assertGreaterEqual(len(storage.all()), 1)
+
+    def test_storage_all_method_with_kwargs_instantiation(self):
+        _ = BaseModel(**({"name": "python"}))
+        self.assertGreaterEqual(len(storage.all()), 1)
+
+    def test_storage_save_and_reload_method_without_instance(self):
+        self.empty_file()
+        storage.reload()
+        _all = storage.all()
+        self.assertEqual(len(_all), 0)
+
+    def tearDown(self) -> None:
+        self.empty_file()
+
+    def empty_file(self):
+        filename = "objects.json"
+        with open(filename, "w", encoding="utf-8") as file:
+            print("{}", file=file, end="")
 
 
 if __name__ == "__main__":
