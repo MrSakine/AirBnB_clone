@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 import unittest
 
 
-class TestUser(unittest.TestCase):
+class TestPlace(unittest.TestCase):
     """ Define Place attributes and methods tests """
     def setUp(self):
         """ Instantiate Place test objects """
