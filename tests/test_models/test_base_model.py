@@ -4,6 +4,7 @@ This module is all unit tests about base model class
 """
 import unittest
 from datetime import datetime
+from models import storage
 from models.base_model import BaseModel
 
 
@@ -29,6 +30,25 @@ class TestBaseModelInstantiation(unittest.TestCase):
         bm = BaseModel()
         bm2 = BaseModel()
         self.assertTrue(bm.id != bm2.id)
+
+    def test_initialization_without_kwargs(self):
+        bm = BaseModel()
+        self.assertTrue(len(bm.__dict__) == 3)
+
+    def test_initialization_with_one_kwarg(self):
+        bm = BaseModel(**({"name": "python"}))
+        self.assertEqual(bm.__dict__.__len__(), 4)
+
+    def test_initialization_with_multiple_kwargs(self):
+        bm = BaseModel(**(
+            {
+                "name": "python",
+                "surname": "3.8",
+                "father": "C",
+                "students": "alx"
+            }
+        ))
+        self.assertGreater(bm.__dict__.__len__(), 3)
 
 
 class TestBaseModelSaveMethod(unittest.TestCase):
