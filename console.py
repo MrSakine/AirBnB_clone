@@ -25,9 +25,9 @@ class HBNBCommand(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.classes = {
             "BaseModel": self.create_BaseModel,
-            """"
+            """
             # BUG: I don't know what is going on I think its related to Task-10.
-            """"
+            """
             "User": self.create_User,
             "State": self.create_State,
             "City": self.create_City,
