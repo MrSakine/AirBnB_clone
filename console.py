@@ -24,16 +24,13 @@ class HBNBCommand(cmd.Cmd):
         """init"""
         cmd.Cmd.__init__(self)
         self.classes = {
-            "BaseModel": self.create_BaseModel,
-            """
-            # BUG: I don't know what is going on I think its related to Task-10.
-            """
-            "User": self.create_User,
-            "State": self.create_State,
-            "City": self.create_City,
-            "Place": self.create_Place,
-            "Amenity": self.create_Amenity,
-            "Review": self.create_Review,
+            "BaseModel": self.create_base_model,
+            "User": self.create_user,
+            "State": self.create_state,
+            "City": self.create_city,
+            "Place": self.create_place,
+            "Amenity": self.create_amenity,
+            "Review": self.create_review,
         }
 
     def do_quit(self, line):
@@ -58,50 +55,50 @@ class HBNBCommand(cmd.Cmd):
 
     # INFO: Task 7 Starts Here.
 
-    def create_BaseModel(self, **kwargs):
-        """Create a new instance"""
+    def create_base_model(self, **kwargs):
+        """Create a new instance of base model"""
         if kwargs:
             return BaseModel(**kwargs)
         else:
             return BaseModel()
 
-    def create_User(self, **kwargs):
-        """create a new istance"""
+    def create_user(self, **kwargs):
+        """create a new istance of user"""
         if kwargs:
             return User(**kwargs)
         else:
             return User()
 
-    def create_State(self, **kwargs):
-        """create a new instance"""
+    def create_state(self, **kwargs):
+        """create a new instance of state"""
         if kwargs:
             return State(**kwargs)
         else:
             return State()
 
-    def create_City(self, **kwargs):
-        """create a new instance"""
+    def create_city(self, **kwargs):
+        """create a new instance of city"""
         if kwargs:
             return City(**kwargs)
         else:
             return City()
 
-    def create_Place(self, **kwargs):
-        """create a new instance"""
+    def create_place(self, **kwargs):
+        """create a new instance of place"""
         if kwargs:
             return Place(**kwargs)
         else:
             return Place()
 
-    def create_Amenity(self, **kwargs):
-        """create a new instance"""
+    def create_amenity(self, **kwargs):
+        """create a new instance of amenity"""
         if kwargs:
             return Amenity(**kwargs)
         else:
             return Amenity()
 
-    def create_Review(self, **kwargs):
-        """create a new instance"""
+    def create_review(self, **kwargs):
+        """create a new instance of review"""
         if kwargs:
             return Review(**kwargs)
         else:
