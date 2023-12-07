@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""review.py"""
-
+"""
+This module is about the review model class
+"""
 from models.base_model import BaseModel
 
 

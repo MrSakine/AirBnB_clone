@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""city.py"""
-
+"""
+This module is about the city model class
+"""
 from models.base_model import BaseModel
 
 

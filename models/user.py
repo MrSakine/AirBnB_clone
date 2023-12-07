@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""user.py"""
+"""
+This module is about the user model class
+"""
 from models.base_model import BaseModel
 
 

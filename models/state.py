@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""state.py"""
-
+"""
+This module is about the state model class
+"""
 from models.base_model import BaseModel
 
 

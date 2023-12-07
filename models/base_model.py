@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """
-This module is the base model class
+This module is about the base model class
 """
 import uuid
 import models
-import time
 from datetime import datetime
 
 

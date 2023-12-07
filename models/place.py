@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""place.py"""
-
+"""
+This module is about the place model class
+"""
 from models.base_model import BaseModel
 
 
