@@ -329,7 +329,8 @@ class HBNBCommand(cmd.Cmd):
 
     def update_instance(self, line):
         """
-        Update an instance based on its ID: <class name>.update(<id>, <attribute name>, <attribute value>).
+        Update an instance based on its ID:
+        <class name>.update(<id>, <attribute name>, <attribute value>).
         """
         parsed_line = line.split("(")
         class_and_id = parsed_line[1].strip().split(",")
