@@ -4,6 +4,7 @@ This module is the entry point of the command interpreter
 """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -32,6 +33,7 @@ class HBNBCommand(cmd.Cmd):
             "Amenity": self.create_amenity,
             "Review": self.create_review,
         }
+        self.count_instance_regex = r"^[a-zA-Z]+\.[a-z]+\(\)$"
 
     def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
@@ -246,6 +248,31 @@ class HBNBCommand(cmd.Cmd):
                     print("** instance id missing **")
         else:
             print("** class name missing **")
+
+    def default(self, line):
+        """Handle unnamed commands"""
+        is_count = re.match(self.count_instance_regex, line)
+        if is_count:
+            self.count_instance(line)
+        else:
+            print("Unknown syntax: {}".format(self.parseline(line)[0]))
+
+    def count_instance(self, line):
+        """Count the instance of a class name from file objects"""
+        parsed_lines = line.split(".")
+        class_name = parsed_lines[0]
+        if class_name not in (self.classes).keys():
+            print("** class doesn't exist **")
+            return
+        print(
+            sum(
+                [
+                    1 for _, v in storage.all().items()
+                    for k1, v1 in v.to_dict().items()
+                    if k1 == "__class__" and v1 == class_name
+                ]
+            )
+        )
 
 
 if __name__ == "__main__":
