@@ -272,7 +272,7 @@ class HBNBCommand(cmd.Cmd):
             # <class name>.update(<id>, <attribute name>, <attribute value>)
             pass
         else:
-            print("Unknown syntax: {}".format(self.parseline(line)[0]))
+            print("Unknown syntax: {}".format(self.parseline(line)[2]))
 
     def count_instance(self, line):
         """Count the instance of a class name from file objects"""
