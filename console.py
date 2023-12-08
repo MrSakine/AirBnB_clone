@@ -197,6 +197,18 @@ class HBNBCommand(cmd.Cmd):
                 obj_list.append(str(value))
             print(obj_list)
 
+    def convert_value(self, value):
+        value = value.strip('"')
+        try:
+            return int(value)
+        except ValueError:
+            pass
+        try:
+            return float(value)
+        except ValueError:
+            pass
+        return value
+
     def do_update(self, line):
         """
         Updates an instance based on the class name and id by adding
@@ -214,25 +226,17 @@ class HBNBCommand(cmd.Cmd):
                     for obj, string in objects.items():
                         if obj == key:
                             if len(args) > 2:
-                                for k, val in (string.to_dict()).items():
+                                for k, _ in (string.to_dict()).items():
                                     if k == args[2]:
                                         if len(args) > 3:
-                                            attr_val = type(val)(
-                                                args[3].strip('"')
+                                            attr_val = self.convert_value(
+                                                args[3]
                                             )
-                                            setattr(
-                                                string, args[2], str(attr_val))
+                                            setattr(string, args[2], attr_val)
                                             string.save()
                                         else:
                                             print("** value missing **")
                                         break
-                                else:
-                                    if len(args) > 3:
-                                        setattr(
-                                            string, args[2], args[3].strip('"'))
-                                        string.save()
-                                    else:
-                                        print("** value missing **")
                             else:
                                 print("** attribute name missing **")
                             break
