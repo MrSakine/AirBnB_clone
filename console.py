@@ -262,7 +262,7 @@ class HBNBCommand(cmd.Cmd):
         elif re.match(self.all_instance_regex, line):
             self.all_instances(line)
         elif re.match(self.show_instance_regex, line):
-            pass
+            self.show_instance(line)
         elif re.match(self.destroy_instance_regex, line):
             self.destroy_instance(line)
         elif re.match(self.update_instance_regex, line) and ", {" in line:
@@ -308,6 +308,25 @@ class HBNBCommand(cmd.Cmd):
                     instances.append(str(v))
         print(instances)
 
+    def show_instance(self, line):
+        """
+        Retrieve an instance based on its ID: <class name>.show(<id>).
+        """
+        parse_line = line.split(".")
+        class_and_id = parse_line[1].strip().split("(")
+        class_name = parse_line[0].strip()
+        instance_id = class_and_id[1].strip('")')
+
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        key = "{}.{}".format(class_name, instance_id)
+        if key in storage.all():
+            print(storage.all()[key])
+        else:
+            print("** no instance found **")
+
     def destroy_instance(self, line: str):
         """
         Destroy an instance based on his ID: <class name>.destroy(<id>)
@@ -318,7 +337,7 @@ class HBNBCommand(cmd.Cmd):
             return
         start_occurence = line.find('"')
         end_occurence = line.find('"', start_occurence + 1)
-        object_id = line[start_occurence + 1:end_occurence]
+        object_id = line[start_occurence + 1 : end_occurence]
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid argument **")
             return
@@ -345,13 +364,13 @@ class HBNBCommand(cmd.Cmd):
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the id **")
             return
-        object_id = line[start_occurence + 1:end_occurence]
+        object_id = line[start_occurence + 1 : end_occurence]
         start_occurence = line.find("{")
         end_occurence = line.find("}", start_occurence + 1)
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the dictionary **")
             return
-        dictionary = line[start_occurence:end_occurence + 1]
+        dictionary = line[start_occurence : end_occurence + 1]
         objects = storage.all()
         for obj, value in objects.items():
             if obj.split(".")[1] == object_id:
