@@ -4,6 +4,8 @@ This module is the entry point of the command interpreter
 """
 import cmd
 import sys
+import re
+import json
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -32,6 +34,11 @@ class HBNBCommand(cmd.Cmd):
             "Amenity": self.create_amenity,
             "Review": self.create_review,
         }
+        self.all_instance_regex = r"^[a-zA-Z]+\.all\(\)$"
+        self.count_instance_regex = r"^[a-zA-Z]+\.count\(\)$"
+        self.show_instance_regex = r"^[a-zA-Z]+\.show\("
+        self.destroy_instance_regex = r"^[a-zA-Z]+\.destroy\("
+        self.update_instance_regex = r"^[a-zA-Z]+\.update\("
 
     def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
@@ -197,6 +204,18 @@ class HBNBCommand(cmd.Cmd):
                 obj_list.append(str(value))
             print(obj_list)
 
+    def convert_value(self, value):
+        value = value.strip('"')
+        try:
+            return int(value)
+        except ValueError:
+            pass
+        try:
+            return float(value)
+        except ValueError:
+            pass
+        return value
+
     def do_update(self, line):
         """
         Updates an instance based on the class name and id by adding
@@ -214,21 +233,17 @@ class HBNBCommand(cmd.Cmd):
                     for obj, string in objects.items():
                         if obj == key:
                             if len(args) > 2:
-                                for k, val in (string.to_dict()).items():
+                                for k, _ in (string.to_dict()).items():
                                     if k == args[2]:
                                         if len(args) > 3:
-                                            attr_val = type(val)(args[3])
+                                            attr_val = self.convert_value(
+                                                args[3]
+                                            )
                                             setattr(string, args[2], attr_val)
                                             string.save()
                                         else:
                                             print("** value missing **")
                                         break
-                                    else:
-                                        if len(args) > 3:
-                                            setattr(string, args[2], args[3])
-                                            string.save()
-                                        else:
-                                            print("** value missing **")
                             else:
                                 print("** attribute name missing **")
                             break
@@ -238,6 +253,97 @@ class HBNBCommand(cmd.Cmd):
                     print("** instance id missing **")
         else:
             print("** class name missing **")
+
+    def default(self, line):
+        """Handle unnamed commands"""
+        is_count = re.match(self.count_instance_regex, line)
+        if is_count:
+            self.count_instance(line)
+        elif re.match(self.all_instance_regex, line):
+            pass
+        elif re.match(self.show_instance_regex, line):
+            pass
+        elif re.match(self.destroy_instance_regex, line):
+            self.destroy_instance(line)
+        elif re.match(self.update_instance_regex, line) and ", {" in line:
+            self.update_instance_from_dictionary(line)
+        elif re.match(self.update_instance_regex, line) and ', "' in line:
+            # update instance through attributes
+            # <class name>.update(<id>, <attribute name>, <attribute value>)
+            pass
+        else:
+            print("Unknown syntax: {}".format(self.parseline(line)[2]))
+
+    def count_instance(self, line):
+        """Count the instance of a class name from file objects"""
+        parsed_lines = line.split(".")
+        class_name = parsed_lines[0]
+        if class_name not in (self.classes).keys():
+            print("** class doesn't exist **")
+            return
+        print(
+            sum(
+                [
+                    1 for _, v in storage.all().items()
+                    for k1, v1 in v.to_dict().items()
+                    if k1 == "__class__" and v1 == class_name
+                ]
+            )
+        )
+
+    def destroy_instance(self, line: str):
+        """
+        Destroy an instance based on his ID: <class name>.destroy(<id>)
+        """
+        class_name = line.split('.')[0]
+        if class_name not in (self.classes).keys():
+            print("** class doesn't exist **")
+            return
+        start_occurence = line.find('"')
+        end_occurence = line.find('"', start_occurence + 1)
+        object_id = line[start_occurence + 1:end_occurence]
+        if (start_occurence == -1 or end_occurence == -1):
+            print("** invalid argument **")
+            return
+        objects = storage.all()
+        for obj, _ in objects.items():
+            if obj.split('.')[1] == object_id:
+                del objects[obj]
+                storage.save()
+                break
+        else:
+            print("** no instance found **")
+
+    def update_instance_from_dictionary(self, line: str):
+        """
+        Update an instance based on his ID with a dictionary:
+        <class name>.update(<id>, <dictionary representation>)
+        """
+        class_name = line.split('.')[0]
+        if class_name not in (self.classes).keys():
+            print("** class doesn't exist **")
+            return
+        start_occurence = line.find('"', 0, line.find(','))
+        end_occurence = line.find('"', start_occurence + 1, line.find(','))
+        if (start_occurence == -1 or end_occurence == -1):
+            print("** invalid format for the id **")
+            return
+        object_id = line[start_occurence + 1:end_occurence]
+        start_occurence = line.find('{')
+        end_occurence = line.find('}', start_occurence + 1)
+        if (start_occurence == -1 or end_occurence == -1):
+            print("** invalid format for the dictionary **")
+            return
+        dictionary = line[start_occurence:end_occurence + 1]
+        objects = storage.all()
+        for obj, value in objects.items():
+            if obj.split('.')[1] == object_id:
+                for k, v in eval(dictionary).items():
+                    setattr(value, k, v)
+                storage.save()
+                break
+        else:
+            print("** no instance found **")
 
 
 if __name__ == "__main__":
