@@ -327,6 +327,30 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
+    def update_instance(self, line):
+        """
+        Update an instance based on its ID: <class name>.update(<id>, <attribute name>, <attribute value>).
+        """
+        parsed_line = line.split("(")
+        class_and_id = parsed_line[1].strip().split(",")
+        class_name = parsed_line[0].strip()
+        instance_id = class_and_id[0].strip('").')
+        attribute_name = class_and_id[1].strip()
+        attribute_value = class_and_id[2].strip('")')
+
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        key = "{}.{}".format(class_name, instance_id)
+        if key in storage.all():
+            instance = storage.all()[key]
+            setattr(instance, attribute_name, attribute_value)
+            instance.save()
+            print(instance)
+        else:
+            print("** no instance found **")
+
     def destroy_instance(self, line: str):
         """
         Destroy an instance based on his ID: <class name>.destroy(<id>)
