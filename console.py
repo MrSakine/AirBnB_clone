@@ -223,12 +223,12 @@ class HBNBCommand(cmd.Cmd):
                                         else:
                                             print("** value missing **")
                                         break
+                                else:
+                                    if len(args) > 3:
+                                        setattr(string, args[2], args[3])
+                                        string.save()
                                     else:
-                                        if len(args) > 3:
-                                            setattr(string, args[2], args[3])
-                                            string.save()
-                                        else:
-                                            print("** value missing **")
+                                        print("** value missing **")
                             else:
                                 print("** attribute name missing **")
                             break
