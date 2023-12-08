@@ -34,7 +34,11 @@ class HBNBCommand(cmd.Cmd):
             "Amenity": self.create_amenity,
             "Review": self.create_review,
         }
-        self.count_instance_regex = r"^[a-zA-Z]+\.[a-z]+\(\)$"
+        self.all_instance_regex = r"^[a-zA-Z]+\.all\(\)$"
+        self.count_instance_regex = r"^[a-zA-Z]+\.count\(\)$"
+        self.show_instance_regex = r"^[a-zA-Z]+\.show\("
+        self.destroy_instance_regex = r"^[a-zA-Z]+\.destroy\("
+        self.update_instance_regex = r"^[a-zA-Z]+\.update\("
 
     def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
@@ -255,10 +259,18 @@ class HBNBCommand(cmd.Cmd):
         is_count = re.match(self.count_instance_regex, line)
         if is_count:
             self.count_instance(line)
-        elif ".destroy" in line:
+        elif re.match(self.all_instance_regex, line):
+            pass
+        elif re.match(self.show_instance_regex, line):
+            pass
+        elif re.match(self.destroy_instance_regex, line):
             self.destroy_instance(line)
-        elif ".update" in line and ", {" in line:
+        elif re.match(self.update_instance_regex, line) and ", {" in line:
             self.update_instance_from_dictionary(line)
+        elif re.match(self.update_instance_regex, line) and ', "' in line:
+            # update instance through attributes
+            # <class name>.update(<id>, <attribute name>, <attribute value>)
+            pass
         else:
             print("Unknown syntax: {}".format(self.parseline(line)[0]))
 
