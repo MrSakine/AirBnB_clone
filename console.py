@@ -5,7 +5,7 @@ This module is the entry point of the command interpreter
 import cmd
 import sys
 import re
-import json
+from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -240,6 +240,11 @@ class HBNBCommand(cmd.Cmd):
                                                 args[3]
                                             )
                                             setattr(string, args[2], attr_val)
+                                            setattr(
+                                                string,
+                                                "updated_at",
+                                                datetime.now()
+                                            )
                                             string.save()
                                         else:
                                             print("** value missing **")
@@ -362,7 +367,7 @@ class HBNBCommand(cmd.Cmd):
             return
         start_occurence = line.find('"')
         end_occurence = line.find('"', start_occurence + 1)
-        object_id = line[start_occurence + 1 : end_occurence]
+        object_id = line[start_occurence + 1: end_occurence]
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid argument **")
             return
@@ -389,18 +394,19 @@ class HBNBCommand(cmd.Cmd):
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the id **")
             return
-        object_id = line[start_occurence + 1 : end_occurence]
+        object_id = line[start_occurence + 1: end_occurence]
         start_occurence = line.find("{")
         end_occurence = line.find("}", start_occurence + 1)
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the dictionary **")
             return
-        dictionary = line[start_occurence : end_occurence + 1]
+        dictionary = line[start_occurence: end_occurence + 1]
         objects = storage.all()
         for obj, value in objects.items():
             if obj.split(".")[1] == object_id:
                 for k, v in eval(dictionary).items():
                     setattr(value, k, v)
+                setattr(value, "updated_at", datetime.now())
                 storage.save()
                 break
         else:
