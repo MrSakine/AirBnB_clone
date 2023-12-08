@@ -5,6 +5,7 @@ This module is the entry point of the command interpreter
 import cmd
 import sys
 import re
+import json
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -256,6 +257,8 @@ class HBNBCommand(cmd.Cmd):
             self.count_instance(line)
         elif ".destroy" in line:
             self.destroy_instance(line)
+        elif ".update" in line and ", {" in line:
+            self.update_instance_from_dictionary(line)
         else:
             print("Unknown syntax: {}".format(self.parseline(line)[0]))
 
@@ -294,6 +297,37 @@ class HBNBCommand(cmd.Cmd):
         for obj, _ in objects.items():
             if obj.split('.')[1] == object_id:
                 del objects[obj]
+                storage.save()
+                break
+        else:
+            print("** no instance found **")
+
+    def update_instance_from_dictionary(self, line: str):
+        """
+        Update an instance based on his ID with a dictionary:
+        <class name>.update(<id>, <dictionary representation>)
+        """
+        class_name = line.split('.')[0]
+        if class_name not in (self.classes).keys():
+            print("** class doesn't exist **")
+            return
+        start_occurence = line.find('"', 0, line.find(','))
+        end_occurence = line.find('"', start_occurence + 1, line.find(','))
+        if (start_occurence == -1 or end_occurence == -1):
+            print("** invalid format for the id **")
+            return
+        object_id = line[start_occurence + 1:end_occurence]
+        start_occurence = line.find('{')
+        end_occurence = line.find('}', start_occurence + 1)
+        if (start_occurence == -1 or end_occurence == -1):
+            print("** invalid format for the dictionary **")
+            return
+        dictionary = line[start_occurence:end_occurence + 1]
+        objects = storage.all()
+        for obj, value in objects.items():
+            if obj.split('.')[1] == object_id:
+                for k, v in eval(dictionary).items():
+                    setattr(value, k, v)
                 storage.save()
                 break
         else:
