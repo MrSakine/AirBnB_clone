@@ -260,7 +260,7 @@ class HBNBCommand(cmd.Cmd):
         if is_count:
             self.count_instance(line)
         elif re.match(self.all_instance_regex, line):
-            pass
+            self.all_instances(line)
         elif re.match(self.show_instance_regex, line):
             pass
         elif re.match(self.destroy_instance_regex, line):
@@ -284,30 +284,47 @@ class HBNBCommand(cmd.Cmd):
         print(
             sum(
                 [
-                    1 for _, v in storage.all().items()
+                    1
+                    for _, v in storage.all().items()
                     for k1, v1 in v.to_dict().items()
                     if k1 == "__class__" and v1 == class_name
                 ]
             )
         )
 
+    def all_instances(self, line):
+        """
+        Retrieve all instances of a class by using: <class name>.all()
+        """
+        parse_line = line.split(".")
+        class_name = parse_line[0]
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        instances = []
+        for _, v in storage.all().items():
+            for k, v1 in v.to_dict().items():
+                if k == "__class__" and v1 == class_name:
+                    instances.append(str(v))
+        print(instances)
+
     def destroy_instance(self, line: str):
         """
         Destroy an instance based on his ID: <class name>.destroy(<id>)
         """
-        class_name = line.split('.')[0]
+        class_name = line.split(".")[0]
         if class_name not in (self.classes).keys():
             print("** class doesn't exist **")
             return
         start_occurence = line.find('"')
         end_occurence = line.find('"', start_occurence + 1)
         object_id = line[start_occurence + 1:end_occurence]
-        if (start_occurence == -1 or end_occurence == -1):
+        if start_occurence == -1 or end_occurence == -1:
             print("** invalid argument **")
             return
         objects = storage.all()
         for obj, _ in objects.items():
-            if obj.split('.')[1] == object_id:
+            if obj.split(".")[1] == object_id:
                 del objects[obj]
                 storage.save()
                 break
@@ -319,25 +336,25 @@ class HBNBCommand(cmd.Cmd):
         Update an instance based on his ID with a dictionary:
         <class name>.update(<id>, <dictionary representation>)
         """
-        class_name = line.split('.')[0]
+        class_name = line.split(".")[0]
         if class_name not in (self.classes).keys():
             print("** class doesn't exist **")
             return
-        start_occurence = line.find('"', 0, line.find(','))
-        end_occurence = line.find('"', start_occurence + 1, line.find(','))
-        if (start_occurence == -1 or end_occurence == -1):
+        start_occurence = line.find('"', 0, line.find(","))
+        end_occurence = line.find('"', start_occurence + 1, line.find(","))
+        if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the id **")
             return
         object_id = line[start_occurence + 1:end_occurence]
-        start_occurence = line.find('{')
-        end_occurence = line.find('}', start_occurence + 1)
-        if (start_occurence == -1 or end_occurence == -1):
+        start_occurence = line.find("{")
+        end_occurence = line.find("}", start_occurence + 1)
+        if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the dictionary **")
             return
         dictionary = line[start_occurence:end_occurence + 1]
         objects = storage.all()
         for obj, value in objects.items():
-            if obj.split('.')[1] == object_id:
+            if obj.split(".")[1] == object_id:
                 for k, v in eval(dictionary).items():
                     setattr(value, k, v)
                 storage.save()
