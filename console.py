@@ -254,6 +254,8 @@ class HBNBCommand(cmd.Cmd):
         is_count = re.match(self.count_instance_regex, line)
         if is_count:
             self.count_instance(line)
+        elif ".destroy" in line:
+            self.destroy_instance(line)
         else:
             print("Unknown syntax: {}".format(self.parseline(line)[0]))
 
@@ -273,6 +275,29 @@ class HBNBCommand(cmd.Cmd):
                 ]
             )
         )
+
+    def destroy_instance(self, line: str):
+        """
+        Destroy an instance based on his ID: <class name>.destroy(<id>)
+        """
+        class_name = line.split('.')[0]
+        if class_name not in (self.classes).keys():
+            print("** class doesn't exist **")
+            return
+        start_occurence = line.find('"')
+        end_occurence = line.find('"', start_occurence + 1)
+        object_id = line[start_occurence + 1:end_occurence]
+        if (start_occurence == -1 or end_occurence == -1):
+            print("** invalid argument **")
+            return
+        objects = storage.all()
+        for obj, _ in objects.items():
+            if obj.split('.')[1] == object_id:
+                del objects[obj]
+                storage.save()
+                break
+        else:
+            print("** no instance found **")
 
 
 if __name__ == "__main__":
