@@ -217,15 +217,19 @@ class HBNBCommand(cmd.Cmd):
                                 for k, val in (string.to_dict()).items():
                                     if k == args[2]:
                                         if len(args) > 3:
-                                            attr_val = type(val)(args[3])
-                                            setattr(string, args[2], attr_val)
+                                            attr_val = type(val)(
+                                                args[3].strip('"')
+                                            )
+                                            setattr(
+                                                string, args[2], str(attr_val))
                                             string.save()
                                         else:
                                             print("** value missing **")
                                         break
                                 else:
                                     if len(args) > 3:
-                                        setattr(string, args[2], args[3])
+                                        setattr(
+                                            string, args[2], args[3].strip('"'))
                                         string.save()
                                     else:
                                         print("** value missing **")
