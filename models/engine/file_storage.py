@@ -30,7 +30,7 @@ class FileStorage:
         Attributes:
         - obj (any): the object to store
         """
-        key = "{0}.{1}".format(obj.__class__.__name__, obj.id)
+        key = obj.__class__.__name__ + "." + obj.id
         FileStorage.__objects[key] = obj
 
     def save(self):
