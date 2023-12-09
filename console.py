@@ -62,7 +62,7 @@ class HBNBCommand(cmd.Cmd):
         """help for EOF"""
         print("ctrl+d \texits the program")
 
-    def empty_line(self):
+    def emptyline(self):
         """for empty line"""
         pass
 
