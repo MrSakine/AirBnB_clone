@@ -39,11 +39,10 @@ class HBNBCommand(cmd.Cmd):
         """Parse the user input"""
         if "." in arg and "(" in arg and ")" in arg:
             cls = arg.split(".")
-            cmd = cls[1].split("(")
-            args = cmd[1].split(")")
-            if cls[0] in self.classes_list:
-                if cmd[0] in self.commands_list:
-                    arg = cmd[0] + " " + cls[0] + " " + args[0]
+            comand = cls[1].split("(")
+            args = comand[1].split(")")
+            if cls[0] in self.classes_list and comand[0] in self.commands_list:
+                arg = comand[0] + " " + cls[0] + " " + args[0]
         return arg
 
     def help_help(self):
