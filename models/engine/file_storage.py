@@ -3,6 +3,7 @@
 This module is about the file storage class
 """
 import json
+import os
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -48,22 +49,17 @@ class FileStorage:
 
     def reload(self):
         """Get JSON contents from @__file_path"""
-        try:
-            with open(FileStorage.__file_path, "r", encoding="utf-8") as file:
-                objs = json.load(file)
-                temp = {}
-                for k, v in objs.items():
-                    class_name = v.get("__class__")
-                    if class_name:
-                        cls = globals().get(class_name)
-                        if cls:
-                            temp[k] = cls(
-                                **{
-                                    k1: v1
-                                    for k1, v1 in v.items()
-                                    if k1 != "__class__"
-                                }
-                            )
-                FileStorage.__objects = temp
-        except Exception:
-            pass
+        models_dict = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "City": City,
+            "Place": Place,
+            "Amenity": Amenity,
+            "State": State,
+            "Review": Review,
+        }
+
+        if os.path.exists(FileStorage.__file_path):
+            with open(FileStorage.__file_path, "r") as file:
+                for _, value in json.load(file).items():
+                    self.new(models_dict[value["__class__"]](**value))
