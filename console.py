@@ -45,10 +45,6 @@ class HBNBCommand(cmd.Cmd):
                 arg = comand[0] + " " + cls[0] + " " + args[0]
         return arg
 
-    def help_help(self):
-        """Help command explaination"""
-        print("Usage: help <command>")
-
     def empty_line(self):
         """for empty line"""
         pass
@@ -188,10 +184,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
-        return True
+        sys.exit(1)
 
     def do_EOF(self, line):
         """Exits the program when the user uses <CTRL+D>"""
+        print()
         return True
 
 
