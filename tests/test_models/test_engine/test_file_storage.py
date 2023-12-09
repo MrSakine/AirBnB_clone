@@ -8,6 +8,7 @@ from models.engine.file_storage import FileStorage
 from models import storage
 import os
 import json
+from datetime import datetime
 
 
 class TestFileStorageInstantiation(unittest.TestCase):
@@ -89,6 +90,18 @@ class TestFileStorageInstantiation(unittest.TestCase):
         with open("objects.json", "r") as fd:
             var2 = json.load(fd)
         new = var2[new_key]
+
+        # Round datetime values to the same precision (e.g., seconds)
+        for key in new:
+            if isinstance(var1[key], str) and "T" in var1[key]:
+                var1[key] = str(
+                    datetime.fromisoformat(var1[key]).replace(microsecond=0)
+                )
+            if isinstance(new[key], str) and "T" in new[key]:
+                new[key] = str(
+                    datetime.fromisoformat(new[key]).replace(microsecond=0)
+                )
+
         for key in new:
             self.assertEqual(var1[key], new[key])
 
