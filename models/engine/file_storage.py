@@ -14,17 +14,9 @@ from models.review import Review
 
 
 class FileStorage:
-    """
-    File storage class definition
-    """
+    """File storage class definition"""
 
-    """Class attribute to store the file name"""
     __file_path = "objects.json"
-
-    """
-    Class attribute to store the JSON representation in
-    Python from @__file_path
-    """
     __objects = {}
 
     def all(self):
