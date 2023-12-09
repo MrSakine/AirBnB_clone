@@ -56,5 +56,8 @@ class FileStorage:
 
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r") as file:
-                for _, value in json.load(file).items():
-                    self.new(models_dict[value["__class__"]](**value))
+                try:
+                    for _, value in json.load(file).items():
+                        self.new(models_dict[value["__class__"]](**value))
+                except Exception:
+                    pass
