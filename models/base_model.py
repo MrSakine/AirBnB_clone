@@ -13,7 +13,7 @@ class BaseModel:
     attributes/methods for other classes
     """
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs):
         """
         Initialize attributes of the class, use
         @storage variable to add a new object into @FileStorage
@@ -24,25 +24,18 @@ class BaseModel:
             - created_at (optional, datetime): the creation date of the object
             - updated_at (optional, datetime): last modified date of the object
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
-        if len(kwargs) == 0:
+        if not kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
             models.storage.new(self)
-        elif len(kwargs) != 0:
-            for k, v in kwargs.items():
-                if k != "__class__":
-                    if k == "created_at" or k == "updated_at":
-                        setattr(
-                            self,
-                            k,
-                            datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f"),
-                        )
-                    else:
-                        setattr(self, k, v)
         else:
-            pass
+            time_format = "%Y-%m-%dT%H:%M:%S.%f"
+            for key, value in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.strptime(kwargs[key], time_format)
+                if key != "__class__":
+                    setattr(self, key, value)
 
     def save(self):
         """
