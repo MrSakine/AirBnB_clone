@@ -33,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
         "Review",
     ]
 
-    commands_list = ["create", "show", "update", "all", "destory", "count"]
+    commands_list = ["create", "show", "update", "all", "destroy", "count"]
 
     def precmd(self, arg):
         """Parse the user input"""
