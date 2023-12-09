@@ -168,7 +168,7 @@ class HBNBCommand(cmd.Cmd):
         for a in arg.split(","):
             argument = argument + a
 
-        args = shlex.split(a)
+        args = shlex.split(argument)
 
         if args[0] not in self.classes_list:
             print("** class doesn't exist **")
