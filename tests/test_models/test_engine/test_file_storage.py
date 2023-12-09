@@ -12,6 +12,8 @@ from datetime import datetime
 
 
 class TestFileStorageInstantiation(unittest.TestCase):
+    """Unittests for testing Storage"""
+
     my_model = BaseModel()
 
     def test_object_initialization(self):
