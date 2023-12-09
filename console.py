@@ -53,22 +53,6 @@ class HBNBCommand(cmd.Cmd):
         """for empty line"""
         pass
 
-    def do_quit(self, line):
-        """exits the prompt: Quit command to exit the program"""
-        return True
-
-    def help_quit(self):
-        """help for quit command"""
-        print("Usage: <quit> - exits the program")
-
-    def do_EOF(self, line):
-        """Exits the program when the user uses <CTRL+D>"""
-        return True
-
-    def help_EOF(self):
-        """help for EOF"""
-        print("ctrl+d \texits the program")
-
     def do_create(self, class_name):
         """Creates an instance"""
         if not class_name:
@@ -201,6 +185,14 @@ class HBNBCommand(cmd.Cmd):
             if class_[0] == class_name:
                 count = count + 1
         print(count)
+
+    def do_quit(self, line):
+        """exits the prompt: Quit command to exit the program"""
+        return True
+
+    def do_EOF(self, line):
+        """Exits the program when the user uses <CTRL+D>"""
+        return True
 
 
 if __name__ == "__main__":
