@@ -14,6 +14,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models import storage
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -22,20 +23,27 @@ class HBNBCommand(cmd.Cmd):
     # INFO: task 6
     prompt = "(hbnb) "
 
-    classes_list = ["BaseModel", "User", "Amenity", "Place", "City",
-                    "State", "Review"]
+    classes_list = [
+        "BaseModel",
+        "User",
+        "Amenity",
+        "Place",
+        "City",
+        "State",
+        "Review",
+    ]
 
     commands_list = ["create", "show", "update", "all", "destory", "count"]
 
-    def parse_input(self, arg):
+    def precmd(self, arg):
         """Parse the user input"""
-        if '.' in arg and '(' in arg and ')' in arg:
+        if "." in arg and "(" in arg and ")" in arg:
             cls = arg.split(".")
             cmd = cls[1].split("(")
             args = cmd[1].split(")")
             if cls[0] in self.classes_list:
                 if cmd[0] in self.commands_list:
-                    arg = cmd[0] + ' ' + cls[0] + ' ' + args[0]
+                    arg = cmd[0] + " " + cls[0] + " " + args[0]
         return arg
 
     def help_help(self):
@@ -46,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
         """for empty line"""
         pass
 
-     def do_quit(self, line):
+    def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
         sys.exit(1)
 
@@ -77,15 +85,120 @@ class HBNBCommand(cmd.Cmd):
                 "Place": Place,
                 "Amenity": Amenity,
                 "State": State,
-                "Review": Review
+                "Review": Review,
             }
             model = classes_dict[class_name]()
             print(model.id)
             model.save()
 
     def do_show(self, arg):
-        """SHow instance that been passed"""
+        """Show instance that been passed"""
+        if not arg:
+            print("** class name missing **")
+            return
 
+        args = arg.split(" ")
+
+        if args[0] not in self.classes_list:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            objs = storage.all()
+            for _, value in objs.items():
+                object_name = value.__class__.__name__
+                object_id = value.id
+                if object_name == args[0] and object_id == args[1].strip('"'):
+                    print(value)
+                    return
+            print("** no instance found **")
+
+    def do_destroy(self, arg):
+        """Destorys an instance that been passed"""
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = arg.split(" ")
+
+        if args[0] not in self.classes_list:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            objs = storage.all()
+            for key, value in objs.items():
+                object_name = value.__class__.__name__
+                object_id = value.id
+                if object_name == args[0] and object_id == args[1].strip('"'):
+                    del value
+                    del storage._FileStorage__objects[key]
+                    storage.save()
+                    return
+
+            print("** no instance found **")
+
+    def do_all(self, arg):
+        """prints all instances of the given class"""
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = arg.split(" ")
+
+        if args[0] not in self.classes_list:
+            print("** class doesn't exist **")
+        else:
+            objs = storage.all()
+            instances = []
+            for _, value in objs.items():
+                object_name = value.__class__.__name__
+                if object_name == args[0]:
+                    instances += [value.__str__()]
+            print(instances)
+
+    def do_update(self, arg):
+        """Updates instances based on the class name and id"""
+
+        if not arg:
+            print("** class name missing **")
+            return
+
+        argument = ""
+        for a in arg.split(","):
+            argument = argument + a
+
+        args = shlex.split(a)
+
+        if args[0] not in self.classes_list:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            objs = storage.all()
+            for _, o in objs.items():
+                object_name = o.__class__.__name__
+                object_id = o.id
+                if object_name == args[0] and object_id == args[1].strip('"'):
+                    if len(args) == 2:
+                        print("** attribute name missing **")
+                    elif len(args) == 3:
+                        print("** value missing **")
+                    else:
+                        setattr(o, args[2], args[3])
+                        storage.save()
+                    return
+            print("** no instance found **")
+
+    def do_count(self, class_name):
+        count = 0
+        objs = storage.all()
+
+        for key, _ in objs.items():
+            """Count number of instances"""
+            _cls = key.split(".")
+            if _cls[0] == class_name:
+                count = count + 1
 
 
 if __name__ == "__main__":
