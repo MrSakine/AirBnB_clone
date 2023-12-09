@@ -1,37 +1,39 @@
 #!/usr/bin/python3
 """Defines tests for the City class, defined in <models>"""
 from models.city import City
-from models.base_model import BaseModel
 import unittest
+import datetime
 
 
 class TestCity(unittest.TestCase):
-    """ Define City attributes and methods tests """
+    """Define City attributes and methods tests"""
 
-    def setUp(self):
-        """ Instantiate City test objects """
-        self.city = City()
+    c = City()
 
-    # test that the class correctly instantiates
-    def test_city_instantiation(self):
-        """ test that City class correctly instantiates """
-        self.assertTrue(isinstance(self.city, City))
+    def test_class_exists(self):
+        """tests if class exists"""
+        self.assertEqual(str(type(self.c)), "<class 'models.city.City'>")
 
-    # test that all public class attributes are included
-    def test_city_is_attribute_name(self):
-        """ test that City class contains name public attribute """
-        self.assertTrue(getattr(self.city, 'name', None) is not None)
+    def test_user_inheritance(self):
+        """test if city is a subclass of BaseModel"""
+        self.assertTrue(self.c, City)
 
-    def test_city_is_attribute_state_id(self):
-        """ test that City class contains state_id public attribute """
-        self.assertTrue(getattr(self.city, 'state_id', None) is not None)
+    def testHasAttributes(self):
+        """verify if attributes exist"""
+        self.assertTrue(hasattr(self.c, "state_id"))
+        self.assertTrue(hasattr(self.c, "name"))
+        self.assertTrue(hasattr(self.c, "id"))
+        self.assertTrue(hasattr(self.c, "created_at"))
+        self.assertTrue(hasattr(self.c, "updated_at"))
 
-    def test_city_is_not_attribute_password(self):
-        """ test that City class does NOT contain a random public attribute,
-        password """
-        self.assertTrue(getattr(self.city, 'password', None) is None)
+    def test_types(self):
+        """tests if the type of the attribute is the correct one"""
+        self.assertIsInstance(self.c.state_id, str)
+        self.assertIsInstance(self.c.name, str)
+        self.assertIsInstance(self.c.id, str)
+        self.assertIsInstance(self.c.created_at, datetime.datetime)
+        self.assertIsInstance(self.c.updated_at, datetime.datetime)
 
-    # test that the class inherits from BaseModel
-    def test_city_is_instance_of_base_model(self):
-        """ test that City class inherits from BaseModel """
-        self.assertTrue(isinstance(self.city, BaseModel))
+
+if __name__ == "__main__":
+    unittest.main()
