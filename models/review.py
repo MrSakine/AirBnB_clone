@@ -13,5 +13,5 @@ class Review(BaseModel):
     text = ""
 
     def __init__(self, *args, **kwargs):
-        """init"""
+        """Initialize attributes of the class"""
         BaseModel.__init__(self, *args, **kwargs)
