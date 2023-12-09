@@ -18,9 +18,9 @@ class TestBaseModelInstantiation(unittest.TestCase):
 
     def tearDown(self) -> None:
         """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+        FileStorage.__objects = {}
+        if os.path.exists(FileStorage.__objects):
+            os.remove(FileStorage.__objects)
 
     def test_id_initialization(self):
         bm = BaseModel()
