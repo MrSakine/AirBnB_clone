@@ -3,10 +3,11 @@
 This module is all unit tests about base model class
 """
 import unittest
-import subprocess
+import os
 from datetime import datetime
 from models import storage
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 
 
 class TestBaseModelInstantiation(unittest.TestCase):
@@ -14,6 +15,12 @@ class TestBaseModelInstantiation(unittest.TestCase):
 
     def setUp(self) -> None:
         pass
+
+    def tearDown(self) -> None:
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
 
     def test_id_initialization(self):
         bm = BaseModel()
