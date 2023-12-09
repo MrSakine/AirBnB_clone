@@ -5,7 +5,7 @@ This module is the entry point of the command interpreter
 import cmd
 import sys
 import re
-import json
+from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -206,7 +206,6 @@ class HBNBCommand(cmd.Cmd):
                 ]
             )
         )
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
