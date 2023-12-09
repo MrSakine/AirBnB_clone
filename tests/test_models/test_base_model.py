@@ -15,7 +15,7 @@ class TestBaseModelInstantiation(unittest.TestCase):
 
     my_model = BaseModel()
 
-    def testBaseModel1(self):
+    def test_BaseModel1(self):
         """Test attributes value of a BaseModel instance"""
 
         self.my_model.name = "Holberton"
@@ -28,7 +28,7 @@ class TestBaseModelInstantiation(unittest.TestCase):
         self.assertEqual("BaseModel", my_model_json["__class__"])
         self.assertEqual(self.my_model.id, my_model_json["id"])
 
-    def testSave(self):
+    def test_save(self):
         """Checks if save method updates the public instance instance
         attribute updated_at"""
         self.my_model.first_name = "First"
