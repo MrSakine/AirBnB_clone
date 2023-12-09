@@ -7,6 +7,7 @@ import unittest
 
 class TestPlace(unittest.TestCase):
     """ Define Place attributes and methods tests """
+
     def setUp(self):
         """ Instantiate Place test objects """
         self.place = Place()
