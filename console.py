@@ -189,15 +189,23 @@ class HBNBCommand(cmd.Cmd):
                     return
             print("** no instance found **")
 
-    def do_count(self, class_name):
-        count = 0
-        objs = storage.all()
-
-        for key, _ in objs.items():
-            """Count number of instances"""
-            _cls = key.split(".")
-            if _cls[0] == class_name:
-                count = count + 1
+    def do_count(self, line):
+        """Count the instance of a class name from file objects"""
+        parsed_lines = line.split(".")
+        class_name = parsed_lines[0]
+        if class_name not in self.classes_list:
+            print("** class doesn't exist **")
+            return
+        print(
+            sum(
+                [
+                    1
+                    for _, v in storage.all().items()
+                    for k1, v1 in v.to_dict().items()
+                    if k1 == "__class__" and v1 == class_name
+                ]
+            )
+        )
 
 
 if __name__ == "__main__":
