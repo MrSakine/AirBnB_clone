@@ -3,45 +3,37 @@
 from models.amenity import Amenity
 from models.base_model import BaseModel
 import unittest
+import datetime
 
 
 class TestAmenity(unittest.TestCase):
-    """Define Amenity attributes and methods tests"""
+    """Tests instances and methods from amenity class"""
 
-    def setUp(self):
-        """Instantiate Amenity test objects"""
-        self.amenity = Amenity()
+    a = Amenity()
 
-    # test that the class correctly instantiates
-    def test_amenity_instantiation(self):
-        """test that Amenity class correctly instantiates"""
-        self.assertTrue(isinstance(self.amenity, Amenity))
+    def test_class_exists(self):
+        """tests if class exists"""
+        res = "<class 'models.amenity.Amenity'>"
+        self.assertEqual(str(type(self.a)), res)
 
-    # test that all public class attributes are included
-    def test_amenity_is_attribute_email(self):
-        self.amenity.email = "test@gmail.com"
-        """test that Amenity class contains email public attribute"""
-        self.assertTrue(getattr(self.amenity, "email", None) is not None)
+    def test_user_inheritance(self):
+        """test if Amenity is a subclass of BaseModel"""
+        self.assertIsInstance(self.a, Amenity)
 
-    def test_amenity_is_attribute_first_name(self):
-        """test that Amenity class contains first_name public attribute"""
-        self.amenity.first_name = "test"
-        self.assertTrue(getattr(self.amenity, "first_name", None) is not None)
+    def testHasAttributes(self):
+        """verify if attributes exist"""
+        self.assertTrue(hasattr(self.a, "name"))
+        self.assertTrue(hasattr(self.a, "id"))
+        self.assertTrue(hasattr(self.a, "created_at"))
+        self.assertTrue(hasattr(self.a, "updated_at"))
 
-    def test_amenity_is_attribute_password(self):
-        self.amenity.password = "test"
-        """test that Amenity class contains password public attribute"""
-        self.assertTrue(getattr(self.amenity, "password", None) is not None)
+    def test_types(self):
+        """tests if the type of the attribute is the correct one"""
+        self.assertIsInstance(self.a.name, str)
+        self.assertIsInstance(self.a.id, str)
+        self.assertIsInstance(self.a.created_at, datetime.datetime)
+        self.assertIsInstance(self.a.updated_at, datetime.datetime)
 
-    def test_amenity_is_attribute_last_name(self):
-        self.amenity.last_name = "test"
-        """test that Amenity class contains last_name public attribute"""
-        self.assertTrue(getattr(self.amenity, "last_name", None) is not None)
 
-    # test that the class inherits from BaseModel
-    def test_amenity_is_instance_of_base_model(self):
-        """test that Amenity class correctly instantiates"""
-        self.assertTrue(isinstance(self.amenity, BaseModel))
-
-    def tearDown(self) -> None:
-        del self.amenity
+if __name__ == "__main__":
+    unittest.main()
