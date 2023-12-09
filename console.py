@@ -5,7 +5,7 @@ This module is the entry point of the command interpreter
 import cmd
 import sys
 import re
-import json
+from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -240,6 +240,11 @@ class HBNBCommand(cmd.Cmd):
                                                 args[3]
                                             )
                                             setattr(string, args[2], attr_val)
+                                            setattr(
+                                                string,
+                                                "updated_at",
+                                                datetime.now()
+                                            )
                                             string.save()
                                         else:
                                             print("** value missing **")
@@ -268,9 +273,7 @@ class HBNBCommand(cmd.Cmd):
         elif re.match(self.update_instance_regex, line) and ", {" in line:
             self.update_instance_from_dictionary(line)
         elif re.match(self.update_instance_regex, line) and ', "' in line:
-            # update instance through attributes
-            # <class name>.update(<id>, <attribute name>, <attribute value>)
-            pass
+            self.update_instance(line)
         else:
             print("Unknown syntax: {}".format(self.parseline(line)[2]))
 
@@ -327,6 +330,64 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
+    def update_instance(self, line):
+        """
+        Update an instance based on its ID:
+        <class name>.update(<id>, <attribute name>, <attribute value>).
+        """
+        parsed_line = line.split(".")
+        class_name = parsed_line[0].strip()
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        class_and_id = parsed_line[1].split(",")[1:3]
+        print(class_and_id)
+        if len(class_and_id) < 0:
+            print("** attribute name missing **")
+            return
+        elif len(class_and_id) == 1:
+            print("** value missing **")
+        else:
+            start_occurence = parsed_line[1].find('"')
+            end_occurence = parsed_line[1].find('"', start_occurence + 1)
+            instance_id = parsed_line[1][start_occurence + 1: end_occurence]
+            if start_occurence == -1 or end_occurence == -1:
+                print("** invalid id format **")
+                return
+
+            start_occurence = class_and_id[0].find('"')
+            end_occurence = class_and_id[0].find('"', start_occurence + 1)
+            if start_occurence == -1 or end_occurence == -1:
+                print("** invalid attribute name format **")
+                return
+
+            attribute_name = (
+                class_and_id[0][start_occurence: end_occurence + 1]
+            )
+
+            start_occurence = class_and_id[1].find('"')
+            end_occurence = class_and_id[1].find('"', start_occurence + 1)
+            if start_occurence == -1 or end_occurence == -1:
+                print("** invalid attribute value format **")
+                return
+
+            attribute_value = (
+                class_and_id[1][start_occurence: end_occurence + 1]
+            )
+
+            attribute_name = self.convert_value(attribute_name)
+            attribute_value = self.convert_value(attribute_value)
+
+            key = "{}.{}".format(class_name, instance_id)
+            if key in storage.all():
+                instance = storage.all()[key]
+                setattr(instance, attribute_name, attribute_value)
+                setattr(instance, "updated_at", datetime.now())
+                storage.save()
+            else:
+                print("** no instance found **")
+
     def destroy_instance(self, line: str):
         """
         Destroy an instance based on his ID: <class name>.destroy(<id>)
@@ -337,7 +398,7 @@ class HBNBCommand(cmd.Cmd):
             return
         start_occurence = line.find('"')
         end_occurence = line.find('"', start_occurence + 1)
-        object_id = line[start_occurence + 1 : end_occurence]
+        object_id = line[start_occurence + 1: end_occurence]
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid argument **")
             return
@@ -364,18 +425,19 @@ class HBNBCommand(cmd.Cmd):
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the id **")
             return
-        object_id = line[start_occurence + 1 : end_occurence]
+        object_id = line[start_occurence + 1: end_occurence]
         start_occurence = line.find("{")
         end_occurence = line.find("}", start_occurence + 1)
         if start_occurence == -1 or end_occurence == -1:
             print("** invalid format for the dictionary **")
             return
-        dictionary = line[start_occurence : end_occurence + 1]
+        dictionary = line[start_occurence: end_occurence + 1]
         objects = storage.all()
         for obj, value in objects.items():
             if obj.split(".")[1] == object_id:
                 for k, v in eval(dictionary).items():
                     setattr(value, k, v)
+                setattr(value, "updated_at", datetime.now())
                 storage.save()
                 break
         else:
