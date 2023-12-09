@@ -55,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
-        sys.exit(1)
+        return True
 
     def help_quit(self):
         """help for quit command"""
@@ -63,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """Exits the program when the user uses <CTRL+D>"""
-        print()
         return True
 
     def help_EOF(self):
