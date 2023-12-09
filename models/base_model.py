@@ -57,7 +57,10 @@ class BaseModel:
             if k == "created_at" or k == "updated_at":
                 response[k] = v.strftime("%Y-%m-%dT%H:%M:%S.%f")
             else:
-                response[k] = v
+                if not v:
+                    pass
+                else:
+                    response[k] = v
         response["__class__"] = self.__class__.__name__
         return response
 
