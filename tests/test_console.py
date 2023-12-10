@@ -70,21 +70,21 @@ class TestConsoleCommands(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("help show")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("Show instance that been passed", output)
+            self.assertEqual("Show instance that been passed", output)
 
     def test_create_command(self):
         """Test the create command"""
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("help create")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("Creates an instance", output)
+            self.assertEqual("Creates an instance", output)
 
     def test_update_command(self):
         """Test the update command"""
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("help update")
             output = mock_stdout.getvalue().strip()
-            self.assertIn(
+            self.assertEqual(
                 "Updates instances based on the class name and id", output
             )
 
@@ -93,7 +93,7 @@ class TestConsoleCommands(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("help destroy")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("Destorys an instance that been passed", output)
+            self.assertEqual("Destorys an instance that been passed", output)
 
 
 class TestConsoleEOFCommand(unittest.TestCase):
