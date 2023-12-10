@@ -90,5 +90,15 @@ class TestConsoleCommands(unittest.TestCase):
             self.assertIn("Destorys an instance that been passed", output)
 
 
+class TestConsoleEOFCommand(unittest.TestCase):
+    """Class for testing documentation of the console EOF command"""
+
+    def test_eof_command(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("EOF")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("", output)
+
+
 if __name__ == '__main__':
     unittest.main()
