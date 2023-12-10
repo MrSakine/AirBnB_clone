@@ -4,8 +4,6 @@ This module is the entry point of the command interpreter
 """
 import cmd
 import sys
-import re
-from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -153,8 +151,19 @@ class HBNBCommand(cmd.Cmd):
                 object_name = value.__class__.__name__
                 if object_name == args[0]:
                     instances.append(value.__str__())
-
-        print(instances)
+            print(instances)
+            
+    def convert_value(self, value):
+        value = value.strip('"')
+        try:
+            return int(value)
+        except ValueError:
+            pass
+        try:
+            return float(value)
+        except ValueError:
+            pass
+        return value
 
     def do_update(self, arg):
         """Updates instances based on the class name and id"""
@@ -184,7 +193,16 @@ class HBNBCommand(cmd.Cmd):
                     elif len(args) == 3:
                         print("** value missing **")
                     else:
-                        setattr(o, args[2], args[3])
+                        if args[2].startswith('{'):
+                            temp = args[2:]
+                            data = []
+                            for i in range(len(temp)):
+                                save = temp[i].strip("{").strip(":").strip("}")
+                                data.append(self.convert_value(save))
+                            for i in range(0, len(data), 2):
+                                setattr(o, data[i], data[i + 1])
+                        else:
+                            setattr(o, args[2], args[3])
                         storage.save()
                     return
             print("** no instance found **")
