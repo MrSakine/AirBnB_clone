@@ -50,7 +50,8 @@ class TestConsoleDocs(unittest.TestCase):
             HBNBCommand.__doc__, None, "HBNBCommand class needs a docstring"
         )
         self.assertTrue(
-            len(HBNBCommand.__doc__) >= 1, "HBNBCommand class needs a docstring"
+            len(HBNBCommand.__doc__) >= 1,
+            "HBNBCommand class needs a docstring"
         )
 
 
@@ -386,7 +387,7 @@ class TestConsoleUpdateCommand(unittest.TestCase):
             self.assertEqual("*** Unknown syntax: hamza.update()", output)
 
     def test_update_and_show_instance(self):
-        if InstanceTest.created_instance_id != None:
+        if InstanceTest.created_instance_id is not None:
             with patch('sys.stdout', new=StringIO()) as mock_stdout:
                 console.HBNBCommand().onecmd(
                     "update BaseModel {} first_name \"Betty\"".format(
