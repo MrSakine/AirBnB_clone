@@ -103,7 +103,20 @@ class TestConsoleEOFCommand(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("EOF")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("", output)
+            self.assertEqual("", output)
+
+    def test_quit_command(self):
+        """Test the quit command"""
+        with patch("sys.exit") as mock_exit, patch(
+            "sys.stdout", new=StringIO()
+        ) as mock_stdout:
+            console.HBNBCommand().onecmd("quit")
+
+            # Check if sys.exit was called with the expected argument
+            mock_exit.assert_called_once_with(1)
+            # Check the output to confirm the help message
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual(output, "")
 
 
 class TestConsoleAllCommand(unittest.TestCase):
