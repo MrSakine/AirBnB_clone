@@ -43,5 +43,6 @@ class TestConsoleDocs(unittest.TestCase):
             HBNBCommand.__doc__, None, "HBNBCommand class needs a docstring"
         )
         self.assertTrue(
-            len(HBNBCommand.__doc__) >= 1, "HBNBCommand class needs a docstring"
+            len(HBNBCommand.__doc__) >= 1,
+            "HBNBCommand class needs a docstring"
         )
