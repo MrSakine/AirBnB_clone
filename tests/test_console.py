@@ -288,13 +288,103 @@ class TestConsoleShowCommand(unittest.TestCase):
 class TestConsoleCreateCommand(unittest.TestCase):
     """Class for testing documentation of the console create command"""
 
+    def test_create_without_class_name(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("create")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class name missing **", output)
+
+    def test_create_with_false_class_name(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("create Hamza")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_create_with_more_than_two_args(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("create BaseModel 123")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_create_without_class_name2(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("create()")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_create_with_false_class_name2(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("hamza.create()")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("*** Unknown syntax: hamza.create()", output)
+
 
 class TestConsoleUpdateCommand(unittest.TestCase):
     """Class for testing documentation of the console update command"""
 
+    def test_update_without_class_name(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("update")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class name missing **", output)
+
+    def test_update_with_false_class_name_id_missing(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("update Hamza")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_update_with_false_id(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("update BaseModel 123")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** no instance found **", output)
+
+    def test_update_without_class_name2(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("update()")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_update_with_false_class_name2(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("hamza.update()")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("*** Unknown syntax: hamza.update()", output)
+
 
 class TestConsoleDeleteCommand(unittest.TestCase):
     """Class for testing documentation of the console delete command"""
+
+    def test_destroy_without_class_name(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("destroy")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class name missing **", output)
+
+    def test_destroy_with_false_class_name_id_missing(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("destroy Hamza")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_destroy_with_false_id(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("destroy BaseModel 123")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** no instance found **", output)
+
+    def test_destroy_without_class_name2(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("destroy()")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_destory_with_false_class_name2(self):
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("hamza.destroy()")
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual("*** Unknown syntax: hamza.destroy()", output)
 
 
 if __name__ == "__main__":
