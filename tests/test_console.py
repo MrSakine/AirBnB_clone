@@ -7,6 +7,8 @@ import console
 import inspect
 import pep8
 import unittest
+from unittest.mock import patch
+from io import StringIO
 
 HBNBCommand = console.HBNBCommand
 
@@ -46,3 +48,47 @@ class TestConsoleDocs(unittest.TestCase):
             len(HBNBCommand.__doc__) >= 1,
             "HBNBCommand class needs a docstring"
         )
+
+
+class TestConsoleCommands(unittest.TestCase):
+    """Class for testing documentation of the console help command"""
+
+    def test_help_command(self):
+        """Test the help command"""
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("help")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Documented commands", output)
+
+    def test_show_command(self):
+        """Test the show command"""
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("help show")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Show instance that been passed", output)
+
+    def test_create_command(self):
+        """Test the create command"""
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("help create")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Creates an instance", output)
+
+    def test_update_command(self):
+        """Test the update command"""
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("help update")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn(
+                "Updates instances based on the class name and id", output)
+
+    def test_destroy_command(self):
+        """Test the destroy command"""
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("help destroy")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Destorys an instance that been passed", output)
+
+
+if __name__ == '__main__':
+    unittest.main()
