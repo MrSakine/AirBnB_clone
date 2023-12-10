@@ -20,8 +20,22 @@ from models.user import User
 HBNBCommand = console.HBNBCommand
 
 
+class InstanceTest:
+    """Class to store objects"""
+    base = None
+    amenity = None
+    city = None
+    place = None
+    review = None
+    state = None
+    user = None
+
+
 class TestConsoleDocs(unittest.TestCase):
     """Class for testing documentation of the console"""
+
+    def setUp(self) -> None:
+        """Set up for console tests"""
 
     def test_pep8_conformance_console(self):
         """Test that console.py conforms to PEP8."""
@@ -112,49 +126,49 @@ class TestConsoleAllCommand(unittest.TestCase):
 
     def test_all_command_base_model(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = BaseModel()
+            InstanceTest.base = BaseModel()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("BaseModel", output)
 
     def test_all_command_amenity(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = Amenity()
+            InstanceTest.amenity = Amenity()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("Amenity", output)
 
     def test_all_command_city(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = City()
+            InstanceTest.city = City()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("City", output)
 
     def test_all_command_place(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = Place()
+            InstanceTest.place = Place()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("Place", output)
 
     def test_all_command_review(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = Review()
+            InstanceTest.review = Review()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("Review", output)
 
     def test_all_command_state(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = State()
+            InstanceTest.state = State()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("State", output)
 
     def test_all_command_user(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
-            _ = User()
+            InstanceTest.user = User()
             console.HBNBCommand().onecmd("all")
             output = mock_stdout.getvalue().strip()
             self.assertIn("User", output)
@@ -206,6 +220,98 @@ class TestConsoleAllCommand(unittest.TestCase):
             console.HBNBCommand().onecmd("all Base")
             output = mock_stdout.getvalue().strip()
             self.assertIn("**", output)
+
+
+class TestConsoleShowCommand(unittest.TestCase):
+    """Class for testing documentation of the console show command"""
+
+    def test_show_class_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("show")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** class name missing", output)
+
+    def test_show_invalid_class(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("show Base")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** class doesn't exist", output)
+
+    def test_show_base_model_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.base.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_amenity_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.amenity.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_city_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.city.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_place_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.place.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_review_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.review.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_state_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.state.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_user_id_missing(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show {}".format(InstanceTest.user.__class__.__name__)
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** instance id missing", output)
+
+    def test_show_invalid_id(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "show BaseModel 49faff9a-6318-451f-87b6-910505c55907"
+            )
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("** no instance found", output)
+
+
+class TestConsoleCreateCommand(unittest.TestCase):
+    """Class for testing documentation of the console create command"""
+
+
+class TestConsoleUpdateCommand(unittest.TestCase):
+    """Class for testing documentation of the console update command"""
+
+
+class TestConsoleDeleteCommand(unittest.TestCase):
+    """Class for testing documentation of the console delete command"""
 
 
 if __name__ == '__main__':
