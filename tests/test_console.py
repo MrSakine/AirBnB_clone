@@ -9,6 +9,13 @@ import pep8
 import unittest
 from unittest.mock import patch
 from io import StringIO
+from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 HBNBCommand = console.HBNBCommand
 
@@ -98,6 +105,107 @@ class TestConsoleEOFCommand(unittest.TestCase):
             console.HBNBCommand().onecmd("EOF")
             output = mock_stdout.getvalue().strip()
             self.assertIn("", output)
+
+
+class TestConsoleAllCommand(unittest.TestCase):
+    """Class for testing documentation of the console EOF command"""
+
+    def test_all_command_base_model(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = BaseModel()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("BaseModel", output)
+
+    def test_all_command_amenity(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = Amenity()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Amenity", output)
+
+    def test_all_command_city(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = City()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("City", output)
+
+    def test_all_command_place(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = Place()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Place", output)
+
+    def test_all_command_review(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = Review()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("Review", output)
+
+    def test_all_command_state(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = State()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("State", output)
+
+    def test_all_command_user(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            _ = User()
+            console.HBNBCommand().onecmd("all")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("User", output)
+
+    def test_all_command_base_model_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all BaseModel")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[BaseModel]", output)
+
+    def test_all_command_amenity_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all Amenity")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[Amenity]", output)
+
+    def test_all_command_city_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all City")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[City]", output)
+
+    def test_all_command_place_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all Place")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[Place]", output)
+
+    def test_all_command_review_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all Review")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[Review]", output)
+
+    def test_all_command_state_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all State")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[State]", output)
+
+    def test_all_command_user_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all User")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("[User]", output)
+
+    def test_all_command_invalid_argument(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("all Base")
+            output = mock_stdout.getvalue().strip()
+            self.assertIn("**", output)
 
 
 if __name__ == '__main__':
