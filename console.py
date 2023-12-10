@@ -151,8 +151,8 @@ class HBNBCommand(cmd.Cmd):
                 object_name = value.__class__.__name__
                 if object_name == args[0]:
                     instances.append(value.__str__())
-            print(instances)
-            
+        print(instances)
+
     def convert_value(self, value):
         value = value.strip('"')
         try:
