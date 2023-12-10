@@ -108,7 +108,7 @@ class TestConsoleEOFCommand(unittest.TestCase):
 
 
 class TestConsoleAllCommand(unittest.TestCase):
-    """Class for testing documentation of the console EOF command"""
+    """Class for testing documentation of the console all command"""
 
     def test_all_command_base_model(self):
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
