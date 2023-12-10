@@ -212,13 +212,13 @@ class TestConsoleShowCommand(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("show")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** class name missing", output)
+            self.assertEqual("** class name missing **", output)
 
     def test_show_invalid_class(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("show Base")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** class doesn't exist", output)
+            self.assertEqual("** class doesn't exist **", output)
 
     def test_show_base_model_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -226,7 +226,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.base.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_amenity_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -234,7 +234,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.amenity.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_city_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -242,7 +242,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.city.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_place_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -250,7 +250,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.place.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_review_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -258,7 +258,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.review.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_state_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -266,7 +266,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.state.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_user_id_missing(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -274,7 +274,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show {}".format(InstanceTest.user.__class__.__name__)
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** instance id missing", output)
+            self.assertEqual("** instance id missing **", output)
 
     def test_show_invalid_id(self):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
@@ -282,7 +282,7 @@ class TestConsoleShowCommand(unittest.TestCase):
                 "show BaseModel 49faff9a-6318-451f-87b6-910505c55907"
             )
             output = mock_stdout.getvalue().strip()
-            self.assertIn("** no instance found", output)
+            self.assertEqual("** no instance found **", output)
 
 
 class TestConsoleCreateCommand(unittest.TestCase):
