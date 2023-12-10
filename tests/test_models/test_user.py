@@ -4,58 +4,41 @@ This module is all unit tests about user class
 """
 import unittest
 from models.user import User
+import datetime
 
 
 class TestUser(unittest.TestCase):
     """Unittests for testing instantiation of the Base Model class"""
 
-    def setUp(self) -> None:
-        self.user = User()
+    u = User()
 
-    def test_user_exist(self):
-        """Test if class user exist"""
-        self.assertTrue(isinstance(self.user, User))
+    def test_class_exists(self):
+        """tests if class exists"""
+        self.assertEqual(str(type(self.u)), "<class 'models.user.User'>")
 
-    def test_user_email_attribute(self):
-        """Tests user email attribute"""
-        self.assertTrue(getattr(self.user, "email", None) is not None)
+    def test_user_inheritance(self):
+        """test if User is a subclass of BaseModel"""
+        self.assertIsInstance(self.u, User)
 
-    def test_user_firstname_attribute(self):
-        """Tests user firstname attribute"""
-        self.assertTrue(getattr(self.user, "first_name", None) is not None)
+    def testHasAttributes(self):
+        """verify if attributes exist"""
+        self.assertTrue(hasattr(self.u, "email"))
+        self.assertTrue(hasattr(self.u, "password"))
+        self.assertTrue(hasattr(self.u, "first_name"))
+        self.assertTrue(hasattr(self.u, "last_name"))
+        self.assertTrue(hasattr(self.u, "id"))
+        self.assertTrue(hasattr(self.u, "created_at"))
+        self.assertTrue(hasattr(self.u, "updated_at"))
 
-    def test_user_lastname_attribute(self):
-        """Tests user lastname attribute"""
-        self.assertTrue(getattr(self.user, "last_name", None) is not None)
-
-    def test_user_password_attribute(self):
-        """Tests user password attribute"""
-        self.assertTrue(getattr(self.user, "password", None) is not None)
-
-    def test_user_email_attribute_instance(self):
-        """Tests user email attribute instance"""
-        self.assertTrue(isinstance(getattr(self.user, "email", None), str))
-
-    def test_user_firstname_attribute_instance(self):
-        """Tests user firstname attribute instance"""
-        self.assertTrue(
-            isinstance(
-                getattr(
-                    self.user,
-                    "first_name",
-                    None
-                ),
-                str
-            )
-        )
-
-    def test_user_lastname_attribute_instance(self):
-        """Tests user lastname attribute instance"""
-        self.assertTrue(isinstance(getattr(self.user, "last_name", None), str))
-
-    def test_user_password_attribute_instance(self):
-        """Tests user password attribute instance"""
-        self.assertTrue(isinstance(getattr(self.user, "password", None), str))
+    def test_types(self):
+        """tests if the type of the attribute is the correct one"""
+        self.assertIsInstance(self.u.first_name, str)
+        self.assertIsInstance(self.u.last_name, str)
+        self.assertIsInstance(self.u.email, str)
+        self.assertIsInstance(self.u.password, str)
+        self.assertIsInstance(self.u.id, str)
+        self.assertIsInstance(self.u.created_at, datetime.datetime)
+        self.assertIsInstance(self.u.updated_at, datetime.datetime)
 
 
 if __name__ == "__main__":

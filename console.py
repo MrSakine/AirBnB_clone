@@ -31,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
         "Review",
     ]
 
-    commands_list = ["create", "show", "update", "all", "destory", "count"]
+    commands_list = ["create", "show", "update", "all", "destroy", "count"]
 
     def precmd(self, arg):
         """Parse the user input"""
@@ -43,21 +43,13 @@ class HBNBCommand(cmd.Cmd):
                 arg = comand[0] + " " + cls[0] + " " + args[0]
         return arg
 
-    def help_help(self):
-        """Help command explaination"""
-        print("Usage: help <command>")
-
-    def empty_line(self):
-        """for empty line"""
-        pass
-
     def do_quit(self, line):
         """exits the prompt: Quit command to exit the program"""
         sys.exit(1)
 
     def help_quit(self):
         """help for quit command"""
-        print("Usage: <quit> - exits the program")
+        print("quit \texits the program")
 
     def do_EOF(self, line):
         """Exits the program when the user uses <CTRL+D>"""
@@ -67,6 +59,10 @@ class HBNBCommand(cmd.Cmd):
     def help_EOF(self):
         """help for EOF"""
         print("ctrl+d \texits the program")
+
+    def emptyline(self):
+        """for empty line"""
+        pass
 
     def do_create(self, class_name):
         """Creates an instance"""
@@ -136,22 +132,25 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_all(self, arg):
-        """prints all instances of the given class"""
+        """Prints all instances of the given class or all instances"""
+        objs = storage.all()
+        instances = []
+
         if not arg:
-            print("** class name missing **")
-            return
-
-        args = arg.split(" ")
-
-        if args[0] not in self.classes_list:
-            print("** class doesn't exist **")
+            # If no argument is provided, print all instances
+            for _, value in objs.items():
+                instances.append(value.__str__())
         else:
-            objs = storage.all()
-            instances = []
+            # If argument is provided, print instances of the specified class
+            args = arg.split(" ")
+            if args[0] not in self.classes_list:
+                print("** class doesn't exist **")
+                return
+
             for _, value in objs.items():
                 object_name = value.__class__.__name__
                 if object_name == args[0]:
-                    instances += [value.__str__()]
+                    instances.append(value.__str__())
             print(instances)
             
     def convert_value(self, value):
