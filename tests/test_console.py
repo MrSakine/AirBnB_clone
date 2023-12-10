@@ -28,6 +28,7 @@ class InstanceTest:
     review = None
     state = None
     user = None
+    created_instance_id = None
 
 
 class TestConsoleDocs(unittest.TestCase):
@@ -202,7 +203,18 @@ class TestConsoleAllCommand(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             console.HBNBCommand().onecmd("all Base")
             output = mock_stdout.getvalue().strip()
-            self.assertIn("**", output)
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_all_instances_valid_class(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            # Create instances
+            console.HBNBCommand().onecmd("create BaseModel")
+            console.HBNBCommand().onecmd("create BaseModel")
+            console.HBNBCommand().onecmd("create BaseModel")
+            console.HBNBCommand().onecmd("all BaseModel")
+
+            output = mock_stdout.getvalue().strip()
+            self.assertEqual(len(output.split('\n')), 4)
 
 
 class TestConsoleShowCommand(unittest.TestCase):
@@ -318,6 +330,27 @@ class TestConsoleCreateCommand(unittest.TestCase):
             output = mock_stdout.getvalue().strip()
             self.assertEqual("*** Unknown syntax: hamza.create()", output)
 
+    def test_create_and_show_instance(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd("create BaseModel")
+            create_output = mock_stdout.getvalue().strip()
+
+            # Extracting the ID from the create output
+            InstanceTest.created_instance_id = create_output.split()[-1]
+
+            # Resetting the mock_stdout buffer
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+            # Showing the created instance
+            console.HBNBCommand().onecmd(
+                f"show BaseModel {InstanceTest.created_instance_id}"
+            )
+            show_output = mock_stdout.getvalue().strip()
+
+            self.assertIn(InstanceTest.created_instance_id, show_output)
+            self.assertTrue("BaseModel" in show_output)
+
 
 class TestConsoleUpdateCommand(unittest.TestCase):
     """Class for testing documentation of the console update command"""
@@ -352,6 +385,30 @@ class TestConsoleUpdateCommand(unittest.TestCase):
             output = mock_stdout.getvalue().strip()
             self.assertEqual("*** Unknown syntax: hamza.update()", output)
 
+    def test_update_and_show_instance(self):
+        if InstanceTest.created_instance_id != None:
+            with patch('sys.stdout', new=StringIO()) as mock_stdout:
+                console.HBNBCommand().onecmd(
+                    "update BaseModel {} first_name \"Betty\"".format(
+                        InstanceTest.created_instance_id)
+                )
+
+                # Resetting the mock_stdout buffer
+                mock_stdout.seek(0)
+                mock_stdout.truncate(0)
+
+                # Showing the updated instance
+                console.HBNBCommand().onecmd(
+                    f"show BaseModel {InstanceTest.created_instance_id}"
+                )
+
+                show_output = mock_stdout.getvalue().strip()
+
+                self.assertIn(InstanceTest.created_instance_id, show_output)
+                self.assertTrue("BaseModel" in show_output)
+                self.assertTrue("first_name" in show_output)
+                self.assertTrue("Betty" in show_output)
+
 
 class TestConsoleDeleteCommand(unittest.TestCase):
     """Class for testing documentation of the console delete command"""
@@ -385,6 +442,29 @@ class TestConsoleDeleteCommand(unittest.TestCase):
             console.HBNBCommand().onecmd("hamza.destroy()")
             output = mock_stdout.getvalue().strip()
             self.assertEqual("*** Unknown syntax: hamza.destroy()", output)
+
+    def test_delete_and_show_instance(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            console.HBNBCommand().onecmd(
+                "destroy BaseModel {}".format(
+                    InstanceTest.created_instance_id)
+            )
+
+            # Resetting the mock_stdout buffer
+            mock_stdout.seek(0)
+            mock_stdout.truncate(0)
+
+            # Showing the updated instance
+            console.HBNBCommand().onecmd(
+                f"show BaseModel {InstanceTest.created_instance_id}"
+            )
+
+            show_output = mock_stdout.getvalue().strip()
+            self.assertNotIn(InstanceTest.created_instance_id, show_output)
+            self.assertEqual("** no instance found **", show_output)
+
+    def tearDown(self) -> None:
+        InstanceTest.created_instance_id = None
 
 
 if __name__ == "__main__":
