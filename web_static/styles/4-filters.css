@@ -1,8 +1,7 @@
 section.filters {
   display: flex;
   align-items: center;
-  justify-content: right;
-  color: white;
+  background-color: white;
   height: 70px;
   width: 100%;
   border: 1px solid #DDDDDD;
