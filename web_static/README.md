@@ -27,3 +27,7 @@ Displays a header, footer and a filters box with a search button
 ### 5-index.html
 
 Displays a header, footer and a filters box
+
+### 6-index.html
+
+Displays a header, footer and a filters box with dropdown
