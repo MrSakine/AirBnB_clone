@@ -1,0 +1,30 @@
+ul.popover {
+  position: absolute;
+  top: 70px;
+  background-color: #FAFAFA;
+  list-style-type: none;
+  border: 1px solid #DDDDDD;
+  border-radius: 4px;
+  width: 100%;
+  padding: 30px;
+  display: none;
+  margin: 0;
+}
+
+ul.popover li {
+  margin-bottom: 5px;
+}
+
+ul.popover li ul {
+  list-style-type: none;
+}
+
+ul.popover li h2 {
+  margin: 0;
+}
+
+div.container section.filters div:nth-child(1):hover ul.popover,
+div.container section.filters div:nth-child(2):hover ul.popover {
+  display: block;
+  width: 76%;
+}

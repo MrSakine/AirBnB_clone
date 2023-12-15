@@ -3,16 +3,7 @@ header {
   height: 70px;
   width: 100%;
   border-bottom: 1px solid #CCCCCC;
-}
-
-header>div {
-  margin-left: 20px;
-}
-
-header>div.logo {
-  width: 10%;
-  height: 70px;
   background-image: url("../images/logo.png");
   background-repeat: no-repeat;
-  background-position: left center;
+  background-position: 20px center;
 }
