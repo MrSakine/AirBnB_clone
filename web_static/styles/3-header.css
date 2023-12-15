@@ -5,13 +5,13 @@ header {
   border-bottom: 1px solid #CCCCCC;
 }
 
-header > div {
+header>div {
   margin-left: 20px;
 }
 
-header > div.logo {
-  width: 100%;
-  height: 100%;
+header>div.logo {
+  width: 10%;
+  height: 70px;
   background-image: url("../images/logo.png");
   background-repeat: no-repeat;
   background-position: left center;
