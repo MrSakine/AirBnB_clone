@@ -20,3 +20,6 @@ Displays a header and a footer by using CSS files (same as 1-index.html)
 
 Displays a header and footer by using CSS files (same as 2-index.html)
 
+### 4-index.html
+
+Displays a header, footer and a filters box with a search button
