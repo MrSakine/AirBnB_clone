@@ -1,0 +1,32 @@
+section.places {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+section.places h1 {
+  display: block;
+  font-size: 30px;
+  margin: 10px;
+}
+
+section.places div.multiple_places {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+section.places div.multiple_places article {
+  display: flex;
+  justify-content: center;
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #FF5A5F;
+  border-radius: 4px;
+}
+
+section.places div.multiple_places article h2 {
+  font-size: 30px;
+}
