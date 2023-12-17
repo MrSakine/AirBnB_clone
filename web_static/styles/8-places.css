@@ -1,3 +1,7 @@
+footer {
+  position: sticky;
+}
+
 section.places div.multiple_places article {
   display: flex;
   flex-direction: column;
