@@ -27,6 +27,6 @@ section.places div.multiple_places article {
   border-radius: 4px;
 }
 
-section.places div.multiple_places article h2 {
+section.places div.multiple_places article h2 * {
   font-size: 30px;
 }
