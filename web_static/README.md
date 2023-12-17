@@ -84,9 +84,18 @@ Improve the Places section by using [Flexible boxes](https://intranet.alxswe.com
 
 ### 102-index.html
 
-Improve the page by adding responsive design to display correctly in mobile or small screens
+Improve the page by adding [responsive design](https://intranet.alxswe.com/rltoken/9mRhZcLRxmsuCyF8q7S8Ww) to display correctly in mobile or small screens
 
 Examples:
 
 - no horizontal scrolling
 - redesign search bar depending of the width
+
+### 103-index.html
+
+Improve the page by adding [Accessibility](https://intranet.alxswe.com/rltoken/JO-zonPvzBUfqpYRZDAtug) support
+
+Examples:
+
+- Colors contrast
+- Header tags
