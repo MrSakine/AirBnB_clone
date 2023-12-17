@@ -1,0 +1,15 @@
+/**
+* I have already used flexbox to design the places
+*
+* - File: 7-places.css
+* - Line: from 13 to 18
+* - CSS:
+*   section.places div.multiple_places {
+*     display: flex;
+*     flex-direction: row;
+*     flex-wrap: wrap;
+*     justify-content: center;
+*   }
+* - HTML: line 59 and 61 (starting point)
+*
+*/

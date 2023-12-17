@@ -77,3 +77,7 @@ Add more information to a Place article:
       - a review is described by:
         - `h3` tag for the user/date description (font size 14px). Ex: “From Bob Dylan the 27th January 2017”
         - `p` tag for the text (font size 12px)
+
+### 101-index.html
+
+Improve the Places section by using [Flexible boxes](https://intranet.alxswe.com/rltoken/Xc-nBlQHexwNaCuKYpZ2-A) for all Place articles
