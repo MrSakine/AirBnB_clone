@@ -81,3 +81,12 @@ Add more information to a Place article:
 ### 101-index.html
 
 Improve the Places section by using [Flexible boxes](https://intranet.alxswe.com/rltoken/Xc-nBlQHexwNaCuKYpZ2-A) for all Place articles
+
+### 102-index.html
+
+Improve the page by adding responsive design to display correctly in mobile or small screens
+
+Examples:
+
+- no horizontal scrolling
+- redesign search bar depending of the width
